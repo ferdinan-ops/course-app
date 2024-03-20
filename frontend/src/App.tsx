@@ -1,12 +1,15 @@
 import * as React from 'react'
-import { usePreviewImage } from './store/client'
+import { Route, Routes } from 'react-router-dom'
+
+import { MainLayout, ProtectedAuth, ProtectedRoute } from './components/layouts'
 import ImagePreview from './components/atoms/forms/ImagePreview'
 import { Toaster } from './components/ui/toaster'
-import { Route, Routes } from 'react-router-dom'
-import { MainLayout, ProtectedAuth, ProtectedRoute } from './components/layouts'
-import Home from './pages/Home'
-import { ForgotPassword, Login, Register, ResetPassword, VerifyEmail } from './pages/auth'
+
 import { UserDashboard } from './pages/user'
+import { Home, Course } from './pages/public'
+import { ForgotPassword, Login, Register, ResetPassword, VerifyEmail } from './pages/auth'
+
+import { usePreviewImage } from './store/client'
 
 export default function App() {
   const { previewImage, setPreviewImage } = usePreviewImage((state) => ({
@@ -31,6 +34,7 @@ export default function App() {
         <Route path="/verify" element={<VerifyEmail />} />
         <Route element={<MainLayout />}>
           <Route path="/" element={<Home />} />
+          <Route path="/course" element={<Course />} />
         </Route>
       </Routes>
     </React.Fragment>

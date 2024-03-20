@@ -5,4 +5,8 @@ import Password from './forms/Password'
 import Image from './Image'
 import Brand from './Brand'
 
-export { Dropzone, BgAbsolute, Password, Image, Brand }
+import Pagination from './navigations/Pagination'
+
+import CourseSearch from './search/CourseSearch'
+
+export { Dropzone, BgAbsolute, Password, Image, Brand, Pagination, CourseSearch }

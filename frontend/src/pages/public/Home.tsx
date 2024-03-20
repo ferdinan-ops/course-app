@@ -1,5 +1,5 @@
 import { HeroImage, PrivilegeIllustration } from '@/assets'
-import { CourseCard, HomeSection } from '@/components/organisms'
+import { CourseCard, HomeSection, Heading } from '@/components/organisms'
 import { Button } from '@/components/ui/button'
 import { useTitle } from '@/hooks'
 import * as React from 'react'
@@ -18,10 +18,13 @@ export default function Home() {
   return (
     <React.Fragment>
       <HomeSection>
-        <HomeSection.Container className="pb-20 pt-36 lg:pt-0">
+        <HomeSection.Container className="-mt-20 pb-20 pt-36 lg:-mt-24">
           <HomeSection.Body>
-            <HomeSection.SubTitle>#SpiritOfLearning</HomeSection.SubTitle>
-            <HomeSection.Title>Your Dream Career Starts With Us</HomeSection.Title>
+            <Heading>
+              <Heading.SubTitle>#SpiritOfLearning</Heading.SubTitle>
+              <Heading.Title>Your Dream Career Starts With Us</Heading.Title>
+            </Heading>
+
             <p className="mt-5 text-[15px] text-font md:text-base">
               We provide the best online learning experience for you to acquire new skills and knowledge.
             </p>
@@ -37,8 +40,11 @@ export default function Home() {
       <HomeSection className="bg-[#F6F8FD]">
         <HomeSection.Container className="flex-col-reverse xl:flex-row-reverse">
           <HomeSection.Body>
-            <HomeSection.SubTitle className="mb-2">You Deserve Better Career</HomeSection.SubTitle>
-            <HomeSection.Title>Privileges You've Got For Growth</HomeSection.Title>
+            <Heading>
+              <Heading.SubTitle className="mb-2">You Deserve Better Career</Heading.SubTitle>
+              <Heading.Title>Privileges You've Got For Growth</Heading.Title>
+            </Heading>
+
             <ul className="mt-5 flex flex-col gap-2.5 text-[15px] text-font">
               {privileges.map((privilege, i) => (
                 <li key={i} className="flex items-center gap-2.5">
@@ -58,8 +64,10 @@ export default function Home() {
       <HomeSection className="flex-col items-start justify-start bg-[#181230] bg-[url('@/assets/images/grid.svg')] lg:py-36">
         <HomeSection.Container className="items-start justify-start xl:w-[1180px] xl:flex-col xl:gap-7 xl:px-0">
           <HomeSection.Body>
-            <HomeSection.SubTitle className="mb-2">Become Experts</HomeSection.SubTitle>
-            <HomeSection.Title className="text-white">Featured Course From Us</HomeSection.Title>
+            <Heading>
+              <Heading.SubTitle className="mb-2">Become Experts</Heading.SubTitle>
+              <Heading.Title className="text-white">Featured Course From Us</Heading.Title>
+            </Heading>
           </HomeSection.Body>
           <div className="grid grid-cols-1 gap-8 md:grid-cols-2 lg:grid-cols-3">
             {[...Array(3)].map((_, i) => (

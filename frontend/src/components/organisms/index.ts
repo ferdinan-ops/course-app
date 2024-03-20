@@ -1,9 +1,11 @@
 import Alert from './Alert'
 import HomeSection from './HomeSection'
+import Heading from './Heading'
+import Container from './Container'
 
 import MainHeader from './headers/MainHeader'
-import MainFooter from './headers/MainFooter'
+import MainFooter from './footers/MainFooter'
 
 import CourseCard from './courses/CourseCard'
 
-export { Alert, MainHeader, MainFooter, HomeSection, CourseCard }
+export { Alert, MainHeader, MainFooter, HomeSection, CourseCard, Heading, Container }

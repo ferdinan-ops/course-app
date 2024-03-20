@@ -3,13 +3,13 @@ import { HiOutlineClock } from 'react-icons/hi2'
 
 export default function CourseCard() {
   return (
-    <article className="rounded-xl bg-white">
+    <article className="overflow-hidden rounded-xl bg-white">
       <img
         src="https://i.ytimg.com/vi/qk3R3mYiuPA/hqdefault.jpg?sqp=-oaymwEcCPYBEIoBSFXyq4qpAw4IARUAAIhCGAFwAcABBg==&rs=AOn4CLDZYQMHd6nep_NvbTssktITzU4CoA"
         alt="course"
         className="w-full rounded-xl object-cover"
       />
-      <div className="p-5">
+      <div className="p-4">
         <h3 className="text-xl font-semibold text-font">Web Development</h3>
         <h1 className="truncate-3 mt-2 text-[13px] text-font">
           UI (User Interface) and UX (User Experience) are two important aspects of digital product design that focus on

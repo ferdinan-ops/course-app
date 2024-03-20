@@ -6,7 +6,9 @@ export default function MainLayout() {
   return (
     <React.Fragment>
       <MainHeader />
-      <Outlet />
+      <main className="min-h-[calc(100vh-96px)] pt-20 lg:min-h-[calc(100vh-80px)] lg:pt-24">
+        <Outlet />
+      </main>
       <MainFooter />
     </React.Fragment>
   )
