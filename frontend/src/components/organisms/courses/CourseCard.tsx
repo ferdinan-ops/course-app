@@ -1,7 +1,10 @@
 import { Button } from '@/components/ui/button'
 import { HiOutlineClock } from 'react-icons/hi2'
+import { useNavigate } from 'react-router-dom'
 
 export default function CourseCard() {
+  const navigate = useNavigate()
+
   return (
     <article className="overflow-hidden rounded-xl bg-white">
       <img
@@ -25,7 +28,9 @@ export default function CourseCard() {
             <HiOutlineClock className="text-lg" />
             <p className="mt-1 text-sm font-semibold text-primary">10 Pertemuan</p>
           </div>
-          <Button className="text-xs">Join Now</Button>
+          <Button className="text-xs" onClick={() => navigate('/course/1')}>
+            Join Now
+          </Button>
         </div>
       </div>
     </article>

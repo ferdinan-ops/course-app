@@ -18,4 +18,25 @@ body {
     overflow: hidden;
     text-overflow: ellipsis;
   }
+
+  .scroll-custom::-webkit-scrollbar {
+    width: 6px;
+  }
+
+  /* Track */
+  .scroll-custom::-webkit-scrollbar-track {
+    @apply bg-black/5 dark:bg-white/5;
+    /* box-shadow: inset 0 0 5px; */
+    /* border-radius: 10px; */
+  }
+
+  /* Handle */
+  .scroll-custom::-webkit-scrollbar-thumb {
+    @apply rounded-2xl bg-black/10 dark:bg-white/10;
+  }
+
+  /* Handle on hover */
+  .scroll-custom::-webkit-scrollbar-thumb:hover {
+    @apply bg-black/20 dark:bg-white/20;
+  }
 }

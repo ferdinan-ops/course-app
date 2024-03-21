@@ -12,7 +12,7 @@ export default function Course() {
         <CourseSearch />
       </div>
       <div className="mt-10 grid grid-cols-1 gap-12 md:mt-16 md:grid-cols-2 lg:grid-cols-3">
-        {[...Array(9)].map((_, i) => (
+        {[...Array(15)].map((_, i) => (
           <CourseCard key={i} />
         ))}
       </div>

@@ -8,4 +8,7 @@ import MainFooter from './footers/MainFooter'
 
 import CourseCard from './courses/CourseCard'
 
-export { Alert, MainHeader, MainFooter, HomeSection, CourseCard, Heading, Container }
+import CommentForm from './comments/CommentForm'
+import CommentCard from './comments/CommentCard'
+
+export { Alert, MainHeader, MainFooter, HomeSection, CourseCard, Heading, Container, CommentForm, CommentCard }

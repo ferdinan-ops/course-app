@@ -6,7 +6,7 @@ import ImagePreview from './components/atoms/forms/ImagePreview'
 import { Toaster } from './components/ui/toaster'
 
 import { UserDashboard } from './pages/user'
-import { Home, Course } from './pages/public'
+import { Home, Course, DetailCourse } from './pages/public'
 import { ForgotPassword, Login, Register, ResetPassword, VerifyEmail } from './pages/auth'
 
 import { usePreviewImage } from './store/client'
@@ -34,7 +34,10 @@ export default function App() {
         <Route path="/verify" element={<VerifyEmail />} />
         <Route element={<MainLayout />}>
           <Route path="/" element={<Home />} />
-          <Route path="/course" element={<Course />} />
+          <Route path="/course">
+            <Route index element={<Course />} />
+            <Route path=":courseId" element={<DetailCourse />} />
+          </Route>
         </Route>
       </Routes>
     </React.Fragment>
