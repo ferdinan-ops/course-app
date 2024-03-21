@@ -43,7 +43,9 @@ export default function DetailCourse() {
       </section>
       <section className="mt-6 grid grid-cols-6 gap-8">
         <div className="col-span-4">
-          <div className="h-[400px] w-full rounded-md bg-black"></div>
+          <div className="flex h-[400px] w-full rounded-md bg-black">
+            <HiPlayCircle className="m-auto cursor-pointer text-6xl text-white" />
+          </div>
           <div className="mt-8">
             <h1 className="text-2xl font-semibold text-font">About Course</h1>
             <p className="mt-2.5 text-[15px] leading-relaxed text-font">
@@ -58,13 +60,12 @@ export default function DetailCourse() {
               also be able to create HTML tables to present tabular data efficiently.
             </p>
           </div>
-          <div className="mt-8">
-            <h1 className="mb-5 text-2xl font-semibold text-font">Comments</h1>
+          <div className="mt-8 border-t-2 border-slate-200 py-5 xl:py-4">
             <div className="flex w-full flex-col gap-5">
               <CommentForm />
-              <h3 className="px-4 text-sm font-semibold">20 comments</h3>
+              <h3 className="px-4 text-sm font-semibold">3 comments</h3>
               <div className="flex flex-col gap-4 px-4">
-                {[...Array(10)].map((_, i) => (
+                {[...Array(3)].map((_, i) => (
                   <CommentCard key={i} />
                 ))}
               </div>

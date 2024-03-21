@@ -11,4 +11,17 @@ import CourseCard from './courses/CourseCard'
 import CommentForm from './comments/CommentForm'
 import CommentCard from './comments/CommentCard'
 
-export { Alert, MainHeader, MainFooter, HomeSection, CourseCard, Heading, Container, CommentForm, CommentCard }
+import RoadmapCard from './roadmaps/RoadmapCard'
+
+export {
+  Alert,
+  MainHeader,
+  MainFooter,
+  HomeSection,
+  CourseCard,
+  Heading,
+  Container,
+  CommentForm,
+  CommentCard,
+  RoadmapCard
+}

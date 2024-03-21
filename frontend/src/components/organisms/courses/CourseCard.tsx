@@ -1,17 +1,24 @@
 import { Button } from '@/components/ui/button'
+import { cn } from '@/lib/utils'
 import { HiOutlineClock } from 'react-icons/hi2'
 import { useNavigate } from 'react-router-dom'
 
-export default function CourseCard() {
+interface CourseCardProps {
+  type?: 'column' | 'row'
+  containerClassName?: string
+}
+
+const img =
+  'https://i.ytimg.com/vi/qk3R3mYiuPA/hqdefault.jpg?sqp=-oaymwEcCPYBEIoBSFXyq4qpAw4IARUAAIhCGAFwAcABBg==&rs=AOn4CLDZYQMHd6nep_NvbTssktITzU4CoA'
+
+export default function CourseCard({ type = 'column', containerClassName }: CourseCardProps) {
   const navigate = useNavigate()
 
   return (
-    <article className="overflow-hidden rounded-xl bg-white">
-      <img
-        src="https://i.ytimg.com/vi/qk3R3mYiuPA/hqdefault.jpg?sqp=-oaymwEcCPYBEIoBSFXyq4qpAw4IARUAAIhCGAFwAcABBg==&rs=AOn4CLDZYQMHd6nep_NvbTssktITzU4CoA"
-        alt="course"
-        className="w-full rounded-xl object-cover"
-      />
+    <article
+      className={cn('overflow-hidden rounded-xl bg-white', type === 'row' && 'flex flex-row gap-2', containerClassName)}
+    >
+      <img src={img} alt="course" className="w-full rounded-xl object-cover" />
       <div className="p-4">
         <h3 className="text-xl font-semibold text-font">Web Development</h3>
         <h1 className="truncate-3 mt-2 text-[13px] text-font">

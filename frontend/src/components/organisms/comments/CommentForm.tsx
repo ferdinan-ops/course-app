@@ -33,7 +33,8 @@ export default function CommentForm() {
               value={field.value}
               onChange={field.onChange}
               onInput={handleInput}
-              className="flex-1 resize-none self-start overflow-y-hidden border-none pt-[7px] text-sm outline-none md:pt-[9px] md:text-base"
+              placeholder="Type your comment here..."
+              className="flex-1 resize-none self-start overflow-y-hidden border-none pt-[7px] text-sm outline-none placeholder:text-sm md:pt-[9px] md:text-base"
             />
           )}
         />

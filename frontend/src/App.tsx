@@ -6,7 +6,7 @@ import ImagePreview from './components/atoms/forms/ImagePreview'
 import { Toaster } from './components/ui/toaster'
 
 import { UserDashboard } from './pages/user'
-import { Home, Course, DetailCourse } from './pages/public'
+import { Home, Course, DetailCourse, Roadmap, DetailRoadmap } from './pages/public'
 import { ForgotPassword, Login, Register, ResetPassword, VerifyEmail } from './pages/auth'
 
 import { usePreviewImage } from './store/client'
@@ -37,6 +37,10 @@ export default function App() {
           <Route path="/course">
             <Route index element={<Course />} />
             <Route path=":courseId" element={<DetailCourse />} />
+          </Route>
+          <Route path="/roadmap">
+            <Route index element={<Roadmap />} />
+            <Route path=":roadmapId" element={<DetailRoadmap />} />
           </Route>
         </Route>
       </Routes>
