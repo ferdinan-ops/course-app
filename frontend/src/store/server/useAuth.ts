@@ -21,8 +21,8 @@ export const useRegister = () => {
     },
     onSuccess: () => {
       toast({
-        title: 'Akun anda berhasil terdaftar',
-        description: 'Silahkan cek email anda untuk melakukan verifikasi'
+        title: 'Your account is successfully registered',
+        description: 'Please check your email to verify'
       })
     }
   })
@@ -35,8 +35,8 @@ export const useVerifyEmail = () => {
     },
     onSuccess: () => {
       toast({
-        title: 'Email anda berhasil diverifikasi',
-        description: 'Silahkan login untuk melanjutkan'
+        title: 'Your email has been successfully verified',
+        description: 'Please sign in to continue'
       })
     }
   })
@@ -52,8 +52,8 @@ export const useLogin = () => {
       useToken.getState().storeRefreshToken(data.refresh_token)
       useUserInfo.getState().setUser(data.user)
       toast({
-        title: 'Login berhasil',
-        description: 'Selamat datang di aplikasi kami'
+        title: 'Sign in successfully',
+        description: 'Welcome to the YouCourse app'
       })
     }
   })
@@ -69,8 +69,8 @@ export const useLoginWithGoogle = () => {
       useToken.getState().storeRefreshToken(data.refresh_token)
       useUserInfo.getState().setUser(data.user)
       toast({
-        title: 'Login berhasil',
-        description: 'Selamat datang di aplikasi kami'
+        title: 'Sign in successfully',
+        description: 'Welcome to the YouCourse app'
       })
     }
   })
@@ -87,8 +87,8 @@ export const useLogout = () => {
       useToken.getState().removeAccessToken()
       useToken.getState().removeRefreshToken()
       toast({
-        title: 'Logout berhasil',
-        description: 'Anda telah keluar dari aplikasi'
+        title: 'Logout Successfully',
+        description: 'You have successfully logged out of the app'
       })
     }
   })
@@ -101,8 +101,8 @@ export const useForgotPassword = () => {
     },
     onSuccess: () => {
       toast({
-        title: 'Email berhasil dikirim',
-        description: 'Silahkan cek email anda untuk melakukan reset password'
+        title: 'Email sent successfully',
+        description: 'Please check your email to reset your password'
       })
     }
   })
@@ -115,8 +115,8 @@ export const useResetPassword = () => {
     },
     onSuccess: () => {
       toast({
-        title: 'Password berhasil direset',
-        description: 'Silahkan login untuk melanjutkan'
+        title: 'Password successfully reset',
+        description: 'Please sign in to continue'
       })
     }
   })

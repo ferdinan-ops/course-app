@@ -36,7 +36,7 @@ export default function ResetPassword() {
       return resetPassword(data, {
         onSuccess: () => {
           forms.reset(resetPasswordDefaultValues)
-          navigate('/login')
+          navigate('/sign-in')
         }
       })
     }

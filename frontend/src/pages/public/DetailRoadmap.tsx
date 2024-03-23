@@ -4,7 +4,7 @@ import { HiArrowDown } from 'react-icons/hi2'
 
 export default function DetailRoadmap() {
   return (
-    <section className="bg-[#F6F8FD]">
+    <section className="bg-[#F6F8FD] lg:pb-20">
       <Heading className="bg-[#FAFAFA] bg-[url('@/assets/images/bg-roadmap.png')] bg-contain px-4 py-16 text-center">
         <Heading.Title className="text-font">Frontend</Heading.Title>
         <p className="mx-auto mt-2.5 max-w-[720px] text-[15px] leading-relaxed text-font/90">

@@ -6,7 +6,7 @@ import { ImSpinner2 } from 'react-icons/im'
 import { cn } from '@/lib/utils'
 
 const buttonVariants = cva(
-  'inline-flex items-center justify-center whitespace-nowrap rounded-md text-sm font-medium ring-offset-white transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-zinc-950 focus-visible:ring-offset-2 disabled:pointer-events-none disabled:opacity-50 dark:ring-offset-zinc-950 dark:focus-visible:ring-zinc-300',
+  'inline-flex items-center relative justify-center whitespace-nowrap rounded-md text-sm font-medium ring-offset-white transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-zinc-950 focus-visible:ring-offset-2 disabled:pointer-events-none disabled:opacity-50 dark:ring-offset-zinc-950 dark:focus-visible:ring-zinc-300',
   {
     variants: {
       variant: {
@@ -38,12 +38,12 @@ const buttonVariants = cva(
 const loadingVariants = cva('flex absolute left-1/2 top-1/2 -translate-x-1/2 -translate-y-1/2 w-full h-full', {
   variants: {
     variant: {
-      default: 'text-zinc-50 dark:text-zinc-900',
-      destructive: 'text-zinc-50 dark:text-zinc-50',
-      outline: 'hover:text-zinc-900 dark:hover:text-zinc-50',
-      secondary: 'text-zinc-900 dark:text-zinc-50',
-      ghost: 'hover:text-zinc-900 dark:hover:text-zinc-50',
-      link: 'text-zinc-900 dark:text-zinc-50'
+      default: 'text-zinc-50',
+      destructive: 'text-zinc-50',
+      outline: 'text-zinc-900',
+      secondary: 'text-zinc-50',
+      ghost: 'text-zinc-900',
+      link: 'text-zinc-900'
     }
   },
   defaultVariants: {

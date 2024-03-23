@@ -53,7 +53,7 @@ export const verifyEmail = async (req: Request, res: Response) => {
       return res.status(400).json({ error: 'Token sudah tidak berlaku' })
     }
 
-    await AuthService.verifyUserEmail(checkToken.id as string)
+    await AuthService.verifyUserEmail(checkToken.id)
     logInfo(req, 'Email has been verified')
     res.status(200).json({ message: 'Email berhasil diverifikasi' })
   } catch (error) {
@@ -75,7 +75,7 @@ export const login = async (req: Request, res: Response) => {
       return res.status(400).json({ error: 'Email atau password Anda salah' })
     }
 
-    const isValidPassword = AuthService.comparePassword(value.password as string, user.password as string)
+    const isValidPassword = AuthService.comparePassword(value.password as string, user.password)
     if (!isValidPassword) {
       logWarn(req, 'Email or password is wrong')
       return res.status(400).json({ error: 'Email atau password Anda salah' })
@@ -151,7 +151,7 @@ export const forgotPassword = async (req: Request, res: Response) => {
     }
 
     const token = AuthService.generateToken()
-    await AuthService.updateUserToken(user.id as string, token)
+    await AuthService.updateUserToken(user.id, token)
     AuthService.sendForgotPasswordEmail(email as string, token)
 
     logInfo(req, 'Email has been sent')
@@ -176,7 +176,7 @@ export const resetPassword = async (req: Request, res: Response) => {
     }
 
     const hashedPassword = AuthService.hashing(value.password)
-    await AuthService.updateUserPassword(user.id as string, hashedPassword)
+    await AuthService.updateUserPassword(user.id, hashedPassword)
 
     logInfo(req, 'Password has been reset')
     res.status(200).json({ message: 'Password berhasil direset' })
