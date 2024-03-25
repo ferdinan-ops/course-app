@@ -1,3 +1,3 @@
-import UserDashboard from './UserDashboard'
+import UserSettings from './UserSettings'
 
-export { UserDashboard }
+export { UserSettings }

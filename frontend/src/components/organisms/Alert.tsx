@@ -28,12 +28,12 @@ export default function Alert({ children, title, desc, action, btnText }: AlertP
           <AlertDialogDescription>{desc}</AlertDialogDescription>
         </AlertDialogHeader>
         <AlertDialogFooter>
-          <AlertDialogCancel className="text-xs">Batal</AlertDialogCancel>
+          <AlertDialogCancel className="text-xs">Cancel</AlertDialogCancel>
           <AlertDialogAction
             onClick={action}
             className="bg-red-500 text-xs hover:bg-red-600 dark:bg-red-900 dark:text-zinc-50 dark:hover:bg-red-900/90"
           >
-            Ya, {btnText}
+            Yes, {btnText}
           </AlertDialogAction>
         </AlertDialogFooter>
       </AlertDialogContent>

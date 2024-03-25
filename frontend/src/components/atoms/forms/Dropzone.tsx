@@ -112,8 +112,8 @@ export default function Dropzone({ accept, id, setValue, fileValue, maxFileSize,
               className="flex items-center justify-between rounded-lg border border-slate-300 py-2.5 pl-4 pr-5 dark:border-white/25"
             >
               <div className="flex items-center gap-2">
-                <HiOutlineDocument className="text-primary/40 text-2xl dark:text-white/40" />
-                <span className="truncate-1 text-primary/40 text-sm dark:text-white/40">{file?.name ?? file}</span>
+                <HiOutlineDocument className="text-2xl text-zinc-900/40 dark:text-white/40" />
+                <span className="truncate-1 text-sm text-zinc-900/40 dark:text-white/40">{file?.name ?? file}</span>
               </div>
               <div className="flex items-center gap-2">
                 <button
@@ -121,7 +121,7 @@ export default function Dropzone({ accept, id, setValue, fileValue, maxFileSize,
                   className="flex h-7 w-7 cursor-pointer rounded hover:bg-slate-200 dark:hover:bg-zinc-700"
                   onClick={() => handlePreview(URL.createObjectURL(file))}
                 >
-                  <HiOutlineEye className="text-primary/40 m-auto text-xl dark:text-white/40" />
+                  <HiOutlineEye className="m-auto text-xl text-zinc-900/40 dark:text-white/40" />
                 </button>
                 <button
                   type="button"
@@ -136,18 +136,18 @@ export default function Dropzone({ accept, id, setValue, fileValue, maxFileSize,
         </div>
       ) : (
         <div
-          className="border-primary/25 flex flex-col items-center gap-5 rounded-lg border-2 border-dashed py-5 pl-8 pr-6 dark:border-white/25 md:flex-row md:gap-6"
+          className="flex flex-col items-center gap-5 rounded-lg border-2 border-dashed border-zinc-900/25 py-5 pl-8 pr-6 dark:border-white/25 md:flex-row md:gap-6"
           {...getRootProps()}
           ref={dropzoneRef}
         >
           <input id={id} {...getInputProps()} hidden />
-          <HiOutlineCloudArrowUp className="text-primary/40 text-6xl dark:text-white/40 md:text-5xl" />
+          <HiOutlineCloudArrowUp className="text-6xl text-zinc-900/40 dark:text-white/40 md:text-5xl" />
           <div className="flex w-full flex-col items-center justify-between gap-5 md:flex-row md:gap-0">
             <div className="flex flex-col gap-1">
-              <p className="text-primary text-center text-[13px] font-semibold dark:text-white md:text-left">
+              <p className="text-center text-[13px] font-semibold text-zinc-900 dark:text-white md:text-left">
                 Pilih file atau seret dan lepas di sini
               </p>
-              <p className="text-primary/40 text-center text-xs dark:text-white/40 md:text-left">
+              <p className="text-center text-xs text-zinc-900/40 dark:text-white/40 md:text-left">
                 JPG atau PNG ukuran tidak lebih dari 10MB
               </p>
             </div>

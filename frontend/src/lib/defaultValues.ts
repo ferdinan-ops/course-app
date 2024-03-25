@@ -17,4 +17,9 @@ export const resetPasswordDefaultValues = {
   confirmPassword: ''
 }
 
+export const editProfileDefaultValues = {
+  fullname: '',
+  username: ''
+}
+
 export const defaultPhotoUrl = 'https://github.com/shadcn.png'

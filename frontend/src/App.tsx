@@ -5,7 +5,7 @@ import { MainLayout, ProtectedAuth, ProtectedRoute } from './components/layouts'
 import ImagePreview from './components/atoms/forms/ImagePreview'
 import { Toaster } from './components/ui/toaster'
 
-import { UserDashboard } from './pages/user'
+import { UserSettings } from './pages/user'
 import { Home, Course, DetailCourse, Roadmap, DetailRoadmap } from './pages/public'
 import { ForgotPassword, Login, Register, ResetPassword, VerifyEmail } from './pages/auth'
 
@@ -22,9 +22,6 @@ export default function App() {
       {previewImage && <ImagePreview image={previewImage} onShow={() => setPreviewImage('')} />}
       <Toaster />
       <Routes>
-        <Route element={<ProtectedRoute />}>
-          <Route path="/user" element={<UserDashboard />} />
-        </Route>
         <Route element={<ProtectedAuth />}>
           <Route path="/sign-in" element={<Login />} />
           <Route path="/sign-up" element={<Register />} />
@@ -42,6 +39,15 @@ export default function App() {
             <Route index element={<Roadmap />} />
             <Route path=":roadmapId" element={<DetailRoadmap />} />
           </Route>
+          <Route element={<ProtectedRoute />}>
+            <Route path="/me">
+              <Route index element={<UserSettings />} />
+              <Route path="course" element={<Course />} />
+            </Route>
+          </Route>
+        </Route>
+        <Route element={<ProtectedRoute />}>
+          <Route path="/me/change-password" element={<ResetPassword />} />
         </Route>
       </Routes>
     </React.Fragment>

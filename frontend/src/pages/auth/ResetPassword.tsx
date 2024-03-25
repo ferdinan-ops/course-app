@@ -13,6 +13,7 @@ import { resetPasswordDefaultValues } from '@/lib/defaultValues'
 
 import { useResetPassword } from '@/store/server/useAuth'
 import { useTitle } from '@/hooks'
+import { useChangePassword } from '@/store/server/useUser'
 
 const CHANGE_PASSWORD = '/me/change-password'
 
@@ -23,6 +24,7 @@ export default function ResetPassword() {
   const isChangePassword = location.pathname === CHANGE_PASSWORD
 
   const { mutate: resetPassword, isLoading } = useResetPassword()
+  const { mutate: changePassword, isLoading: isLoadingChange } = useChangePassword()
 
   const forms = useForm<ResetPasswordType>({
     mode: 'onTouched',
@@ -40,6 +42,14 @@ export default function ResetPassword() {
         }
       })
     }
+
+    const data = { password: values.password, confirmPassword: values.confirmPassword }
+    return changePassword(data, {
+      onSuccess: () => {
+        forms.reset(resetPasswordDefaultValues)
+        navigate('/me')
+      }
+    })
   }
 
   return (
@@ -92,7 +102,7 @@ export default function ResetPassword() {
               </FormItem>
             )}
           />
-          <Button className="font-semibold" type="submit" loading={isLoading}>
+          <Button className="font-semibold" type="submit" loading={isLoading || isLoadingChange}>
             Reset Password
           </Button>
         </form>

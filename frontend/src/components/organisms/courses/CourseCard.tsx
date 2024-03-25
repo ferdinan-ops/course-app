@@ -9,7 +9,7 @@ interface CourseCardProps {
 }
 
 const img =
-  'https://i.ytimg.com/vi/qk3R3mYiuPA/hqdefault.jpg?sqp=-oaymwEcCPYBEIoBSFXyq4qpAw4IARUAAIhCGAFwAcABBg==&rs=AOn4CLDZYQMHd6nep_NvbTssktITzU4CoA'
+  'https://buildwithangga.com/storage/assets/thumbnails/ccfd1ngr-Full-Stack%20Flutter%20Developer%20Build%20Hotels%20App%20BuildWithAngga.png'
 
 export default function CourseCard({ type = 'column', containerClassName }: CourseCardProps) {
   const navigate = useNavigate()

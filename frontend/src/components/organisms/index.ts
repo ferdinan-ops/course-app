@@ -13,6 +13,9 @@ import CommentCard from './comments/CommentCard'
 
 import RoadmapCard from './roadmaps/RoadmapCard'
 
+import EditEmail from './modal/EditEmail'
+import UploadPhoto from './modal/UploadPhoto'
+
 export {
   Alert,
   MainHeader,
@@ -23,5 +26,7 @@ export {
   Container,
   CommentForm,
   CommentCard,
-  RoadmapCard
+  RoadmapCard,
+  EditEmail,
+  UploadPhoto
 }

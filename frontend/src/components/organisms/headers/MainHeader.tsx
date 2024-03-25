@@ -31,6 +31,7 @@ export default function MainHeader() {
   const user = useUserInfo((state) => state.user)
 
   const [isOpen, setIsOpen] = React.useState(false)
+  const handleClose = () => setIsOpen(false)
 
   const handleLogout = () => {
     logout()
@@ -54,12 +55,12 @@ export default function MainHeader() {
         {user.role === 'GUEST' ? (
           <div className="relative w-fit">
             <ProfileBox
+              isHidden
               user={user}
-              maxWidth={150}
               onClick={() => setIsOpen(!isOpen)}
               className="cursor-pointer rounded-lg bg-zinc-100 px-2.5 py-2 hover:bg-zinc-200"
             >
-              <HiOutlineChevronDown className="text-lg text-font" />
+              <HiOutlineChevronDown className="hidden text-lg text-font lg:block" />
             </ProfileBox>
 
             <div
@@ -69,12 +70,12 @@ export default function MainHeader() {
                 isOpen ? 'visible translate-y-0 opacity-100' : 'invisible translate-y-[-10px] opacity-0'
               )}
             >
-              <ProfileBox user={user} maxWidth={170} className="border-b border-zinc-200 pb-4" />
-              <Link to="/me/course" className={cn(dropdownLinkClass, 'mt-3')}>
+              <ProfileBox user={user} className="border-b border-zinc-200 pb-4" />
+              <Link to="/me/course" className={cn(dropdownLinkClass, 'mt-3')} onClick={handleClose}>
                 <HiOutlineBookOpen className="text-xl" />
                 <span className="text-sm font-medium">My Courses</span>
               </Link>
-              <Link to="/me" className={dropdownLinkClass}>
+              <Link to="/me" className={dropdownLinkClass} onClick={handleClose}>
                 <HiOutlineCog6Tooth className="text-xl" />
                 <span className="text-sm font-medium">Settings</span>
               </Link>
@@ -82,7 +83,7 @@ export default function MainHeader() {
               <Alert
                 title="Comeback soon?"
                 desc="Are you sure you want to sign out of the app?"
-                btnText="Sign Out"
+                btnText="sign out"
                 action={handleLogout}
               >
                 <button className={cn(dropdownLinkClass, 'w-full cursor-pointer text-red-500')}>
@@ -119,14 +120,14 @@ interface ProfileBoxProps {
   children?: React.ReactNode
   user: UserType
   className?: string
-  maxWidth?: number
+  isHidden?: boolean
 }
 
-function ProfileBox({ user, onClick, children, className, maxWidth }: ProfileBoxProps) {
+function ProfileBox({ user, onClick, children, className, isHidden }: ProfileBoxProps) {
   return (
     <div className={cn('flex items-center gap-3.5', className)} onClick={() => onClick && onClick()}>
       <Image src={user.photo} alt={user.fullname} className="h-10 w-10 rounded-full" />
-      <div className={`flex max-w-[${maxWidth}px] flex-col`}>
+      <div className={cn('flex max-w-[170px] flex-col', isHidden && 'hidden lg:flex')}>
         <h3 className="truncate text-sm font-semibold text-font">{user.username}</h3>
         <p className="truncate text-xs text-font/50">{user.email}</p>
       </div>

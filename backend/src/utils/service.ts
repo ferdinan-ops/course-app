@@ -5,6 +5,7 @@ export const userSelect = {
     username: true,
     email: true,
     photo: true,
-    provider: true
+    provider: true,
+    role: true
   }
 }
