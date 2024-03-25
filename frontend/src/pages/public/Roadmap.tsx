@@ -1,6 +1,6 @@
 import { Container, Heading, RoadmapCard } from '@/components/organisms'
 
-const roadmaps = [
+export const roadmaps = [
   'Frontend',
   'Backend',
   'DevOps',

@@ -52,7 +52,7 @@ export default function MainHeader() {
             </Link>
           ))}
         </nav>
-        {user.role === 'GUEST' ? (
+        {user?.role === 'GUEST' ? (
           <div className="relative w-fit">
             <ProfileBox
               isHidden

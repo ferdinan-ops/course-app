@@ -2,8 +2,9 @@ import { UserType } from '@/lib/types/user.type'
 import { create } from 'zustand'
 
 interface UserInfoStore {
-  user: UserType
+  user: UserType | null
   setUser: (user: UserType) => void
+  removeUser: () => void
 }
 
 export const useUserInfo = create<UserInfoStore>((set) => ({
@@ -11,5 +12,9 @@ export const useUserInfo = create<UserInfoStore>((set) => ({
   setUser: (user) => {
     localStorage.setItem('user-info', JSON.stringify(user))
     set({ user })
+  },
+  removeUser: () => {
+    localStorage.removeItem('user-info')
+    set({ user: null })
   }
 }))

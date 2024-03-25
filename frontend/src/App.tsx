@@ -1,10 +1,20 @@
 import * as React from 'react'
 import { Route, Routes } from 'react-router-dom'
 
-import { MainLayout, ProtectedAuth, ProtectedRoute } from './components/layouts'
+import { AdminLayout, MainLayout, ProtectedAuth, ProtectedRoute } from './components/layouts'
 import ImagePreview from './components/atoms/forms/ImagePreview'
 import { Toaster } from './components/ui/toaster'
 
+import {
+  AdminCourse,
+  AdminDashboard,
+  AdminProfile,
+  AdminRoadmap,
+  CreateCourse,
+  CreateRoadmap,
+  CreateVideo,
+  VideoCourse
+} from './pages/admin'
 import { UserSettings } from './pages/user'
 import { Home, Course, DetailCourse, Roadmap, DetailRoadmap } from './pages/public'
 import { ForgotPassword, Login, Register, ResetPassword, VerifyEmail } from './pages/auth'
@@ -48,6 +58,28 @@ export default function App() {
         </Route>
         <Route element={<ProtectedRoute />}>
           <Route path="/me/change-password" element={<ResetPassword />} />
+        </Route>
+        <Route element={<AdminLayout />}>
+          <Route path="/admin">
+            <Route path="dashboard" element={<AdminDashboard />} />
+            <Route path="profile" element={<AdminProfile />} />
+            <Route path="course">
+              <Route index element={<AdminCourse />} />
+              <Route path="create" element={<CreateCourse />} />
+
+              <Route path=":courseId">
+                <Route path="video">
+                  <Route index element={<VideoCourse />} />
+                  <Route path="create" element={<CreateVideo />} />
+                </Route>
+              </Route>
+            </Route>
+
+            <Route path="roadmap">
+              <Route index element={<AdminRoadmap />} />
+              <Route path="create" element={<CreateRoadmap />} />
+            </Route>
+          </Route>
         </Route>
       </Routes>
     </React.Fragment>

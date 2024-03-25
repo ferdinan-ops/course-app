@@ -1,4 +1,5 @@
 import { cn } from '@/lib/utils'
+import { IconType } from 'react-icons'
 
 interface HeadingProps {
   children: React.ReactNode
@@ -16,5 +17,16 @@ const SubTitle = ({ children, className }: HeadingProps) => (
   <p className={cn('text-[15px] font-medium text-[#47BB8E] md:text-base', className)}>{children}</p>
 )
 
+interface IconProps {
+  icon: IconType
+}
+
+const Icon = ({ icon: Icon }: IconProps) => (
+  <div className="flex h-16 w-16 rounded-full border-2 bg-zinc-100">
+    <Icon className="m-auto text-[32px] text-font/80" />
+  </div>
+)
+
 Heading.Title = Title
 Heading.SubTitle = SubTitle
+Heading.Icon = Icon

@@ -86,6 +86,7 @@ export const useLogout = () => {
       queryClient.clear()
       useToken.getState().removeAccessToken()
       useToken.getState().removeRefreshToken()
+      useUserInfo.getState().removeUser()
       toast({
         title: 'Logout Successfully',
         description: 'You have successfully logged out of the app'
