@@ -3,18 +3,18 @@ import { UserType } from '@/lib/types/user.type'
 import { ChangePasswordType, ChangeProfilePicType, EditUserType } from '@/lib/validations/user.validation'
 
 export const updateMeFn = async (data: EditUserType): Promise<UserType> => {
-  const response = await api.put('/users', data)
+  const response = await api.put('/user', data)
   return response.data?.data
 }
 
 export const changePasswordFn = async (data: ChangePasswordType) => {
   if (data.confirmPassword) {
-    return await api.put('/users/change-password', data)
+    return await api.put('/user/change-password', data)
   }
 }
 
 export const updateEmailFn = async (email: string) => {
-  return await api.put('/users/change-email', { email })
+  return await api.put('/user/change-email', { email })
 }
 
 export const uploadProfilePicFn = async (data: ChangeProfilePicType): Promise<UserType> => {
@@ -23,7 +23,7 @@ export const uploadProfilePicFn = async (data: ChangeProfilePicType): Promise<Us
     formData.append('photo', data.photo[0])
   }
 
-  const response = await api.put('/users/change-photo', formData, {
+  const response = await api.put('/user/change-photo', formData, {
     headers: {
       'Content-Type': 'multipart/form-data'
     }

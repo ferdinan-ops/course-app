@@ -81,8 +81,8 @@ export const login = async (req: Request, res: Response) => {
       return res.status(400).json({ error: 'Email atau password Anda salah' })
     }
 
-    const accessToken = AuthService.accessTokenSign({ id: user.id })
-    const refreshToken = AuthService.refreshTokenSign({ id: user.id })
+    const accessToken = AuthService.accessTokenSign({ id: user.id, role: user.role })
+    const refreshToken = AuthService.refreshTokenSign({ id: user.id, role: user.role })
 
     const { password, ...rest } = user
     const data = { user: rest, access_token: accessToken, refresh_token: refreshToken }
@@ -123,8 +123,8 @@ export const loginGoogle = async (req: Request, res: Response) => {
       })
     }
 
-    const accessToken = AuthService.accessTokenSign({ id: user.id })
-    const refreshToken = AuthService.refreshTokenSign({ id: user.id })
+    const accessToken = AuthService.accessTokenSign({ id: user.id, role: user.role })
+    const refreshToken = AuthService.refreshTokenSign({ id: user.id, role: user.role })
 
     const { password, ...rest } = user
     const data = { user: rest, access_token: accessToken, refresh_token: refreshToken }
@@ -216,7 +216,7 @@ export const refreshToken = async (req: Request, res: Response) => {
         return res.status(401).json({ error: 'Unauthorized' })
       }
 
-      const accessToken = AuthService.accessTokenSign({ id: user.id })
+      const accessToken = AuthService.accessTokenSign({ id: user.id, role: user.role })
       const data = { user, access_token: accessToken, refresh_token: refreshToken }
 
       logInfo(req, 'Access token is successfully refreshed')

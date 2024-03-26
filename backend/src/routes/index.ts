@@ -1,8 +1,18 @@
 import { type Application, type Router } from 'express'
 
 import authRoute from './auth.route'
+import userRoute from './user.route'
+import courseRoute from './course.route'
+import videoRoute from './video.route'
+import roadmapRoute from './roadmap.route'
 
-const _routes = [['/auth', authRoute]]
+const _routes = [
+  ['/auth', authRoute],
+  ['/user', userRoute],
+  ['/course', courseRoute],
+  ['/video', videoRoute],
+  ['/roadmap', roadmapRoute]
+]
 
 const routes = (app: Application) => {
   _routes.forEach((route) => {

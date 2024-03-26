@@ -8,6 +8,7 @@ export interface IUser {
 
 export interface ITokenPayload {
   id: string
+  role: string
 }
 
 export type IUserUpdatePayload = Omit<IUser, 'email' | 'password' | 'photo'>
