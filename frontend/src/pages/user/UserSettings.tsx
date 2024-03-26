@@ -16,6 +16,7 @@ import { useUpdateMe } from '@/store/server/useUser'
 import { editProfileDefaultValues } from '@/lib/defaultValues'
 import { EditUserType, editUserValidation } from '@/lib/validations/user.validation'
 import { useTitle } from '@/hooks'
+import { UserType } from '@/lib/types/user.type'
 
 export default function UserSettings() {
   useTitle('User Settings')
@@ -32,8 +33,8 @@ export default function UserSettings() {
   })
 
   React.useEffect(() => {
-    forms.setValue('fullname', user.fullname)
-    forms.setValue('username', user.username)
+    forms.setValue('fullname', user?.fullname as string)
+    forms.setValue('username', user?.username as string)
   }, [user, forms])
 
   const onSubmit = (values: EditUserType) => {
@@ -52,7 +53,7 @@ export default function UserSettings() {
         <Heading.Title>Edit Profile</Heading.Title>
       </Heading>
       <section className="mt-10 border-b pb-10">
-        <UploadPhoto user={user} />
+        <UploadPhoto user={user as UserType} />
         <Form {...forms}>
           <form onSubmit={forms.handleSubmit(onSubmit)} className="col-span-1 flex w-full flex-col gap-5">
             <FormField
@@ -102,7 +103,7 @@ export default function UserSettings() {
             <HiOutlineLockClosed className="text-xl" />
             Reset Password
           </Button>
-          <EditEmail email={user.email} />
+          <EditEmail email={user?.email as string} />
           <Alert
             title="Comeback soon?"
             desc="Are you sure you want to sign out of the app?"

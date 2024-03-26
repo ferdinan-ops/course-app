@@ -18,12 +18,12 @@ export default function CreateCourse() {
 
   return (
     <React.Fragment>
-      <Heading className="flex flex-col gap-1 text-font">
+      <Heading className="mx-auto flex w-6/12 flex-col gap-1 text-font">
         <Heading.Title>Create Course</Heading.Title>
         <Heading.SubTitle className="text-font/80">Fill in the form below to create a new course</Heading.SubTitle>
       </Heading>
       <Form {...forms}>
-        <form onSubmit={forms.handleSubmit(onSubmit)} className="mt-16 flex w-6/12 flex-col gap-5">
+        <form onSubmit={forms.handleSubmit(onSubmit)} className="mx-auto mt-16 flex w-6/12 flex-col gap-5">
           <FormField
             name="title"
             control={forms.control}
