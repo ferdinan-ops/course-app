@@ -27,8 +27,11 @@ export default function Login() {
 
   const onSubmit = (values: LoginType) => {
     login(values, {
-      onSuccess: () => {
+      onSuccess: (results) => {
         forms.reset(loginDefaultValues)
+        if (results.user.role === 'ADMIN') {
+          return navigate('/admin/dashboard')
+        }
         navigate('/')
       }
     })

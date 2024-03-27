@@ -1,7 +1,7 @@
 import * as React from 'react'
 import { Route, Routes } from 'react-router-dom'
 
-import { AdminLayout, MainLayout, ProtectedAuth, ProtectedRoute } from './components/layouts'
+import { AdminLayout, MainLayout, ProtectedAuth, ProtectedFromAdmin, ProtectedFromGuest } from './components/layouts'
 import ImagePreview from './components/atoms/forms/ImagePreview'
 import { Toaster } from './components/ui/toaster'
 
@@ -49,35 +49,37 @@ export default function App() {
             <Route index element={<Roadmap />} />
             <Route path=":roadmapId" element={<DetailRoadmap />} />
           </Route>
-          <Route element={<ProtectedRoute />}>
+          <Route element={<ProtectedFromAdmin />}>
             <Route path="/me">
               <Route index element={<UserSettings />} />
               <Route path="course" element={<Course />} />
             </Route>
           </Route>
         </Route>
-        <Route element={<ProtectedRoute />}>
+        <Route element={<ProtectedFromAdmin />}>
           <Route path="/me/change-password" element={<ResetPassword />} />
         </Route>
-        <Route element={<AdminLayout />}>
-          <Route path="/admin">
-            <Route path="dashboard" element={<AdminDashboard />} />
-            <Route path="profile" element={<AdminProfile />} />
-            <Route path="course">
-              <Route index element={<AdminCourse />} />
-              <Route path="create" element={<CreateCourse />} />
+        <Route element={<ProtectedFromGuest />}>
+          <Route element={<AdminLayout />}>
+            <Route path="/admin">
+              <Route path="dashboard" element={<AdminDashboard />} />
+              <Route path="profile" element={<AdminProfile />} />
+              <Route path="course">
+                <Route index element={<AdminCourse />} />
+                <Route path="create" element={<CreateCourse />} />
 
-              <Route path=":courseId">
-                <Route path="video">
-                  <Route index element={<VideoCourse />} />
-                  <Route path="create" element={<CreateVideo />} />
+                <Route path=":courseId">
+                  <Route path="video">
+                    <Route index element={<VideoCourse />} />
+                    <Route path="create" element={<CreateVideo />} />
+                  </Route>
                 </Route>
               </Route>
-            </Route>
 
-            <Route path="roadmap">
-              <Route index element={<AdminRoadmap />} />
-              <Route path="create" element={<CreateRoadmap />} />
+              <Route path="roadmap">
+                <Route index element={<AdminRoadmap />} />
+                <Route path="create" element={<CreateRoadmap />} />
+              </Route>
             </Route>
           </Route>
         </Route>
