@@ -18,7 +18,7 @@ export const createCourseFn = async (fields: CreateCourseType) => {
   })
 }
 
-export const updateCourseFn = async (id: string, fields: CreateCourseType) => {
+export const updateCourseFn = async (fields: CreateCourseType & { id: string }) => {
   const formData = new FormData()
   formData.append('title', fields.title)
   formData.append('description', fields.description)
@@ -26,7 +26,7 @@ export const updateCourseFn = async (id: string, fields: CreateCourseType) => {
     formData.append('thumbnail', fields.thumbnail[0])
   }
 
-  return await api.put(`/course/${id}`, formData, {
+  return await api.put(`/course/${fields.id}`, formData, {
     headers: {
       'Content-Type': 'multipart/form-data'
     }
@@ -41,12 +41,12 @@ export const publishCourseFn = async (id: string) => {
   return await api.put(`/course/${id}/publish`)
 }
 
-export const getCoursesFn = async (search: string, page: number, limit: number): Promise<CourseResponseType> => {
+export const getCoursesFn = async (search: string, page: number): Promise<CourseResponseType> => {
   const response = await api.get('/course', {
     params: {
       search,
       page,
-      limit
+      limit: 30
     }
   })
 
