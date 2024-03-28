@@ -58,5 +58,13 @@ export const getRoadmapById = async (roadmapId: string) => {
 }
 
 export const getAllRoadmaps = async () => {
-  return await db.roadmap.findMany()
+  return await db.roadmap.findMany({
+    include: {
+      courses: {
+        include: {
+          _count: { select: { videos: true } }
+        }
+      }
+    }
+  })
 }
