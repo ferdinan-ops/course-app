@@ -1,7 +1,7 @@
 import { CreateCourseType } from '@/lib/validations/course.validation'
 import api from './axiosInstance'
 import { CourseResponseType, CourseType } from '@/lib/types/course.type'
-import { VideoType } from '@/lib/types/video.type'
+import { VideoResponseType } from '@/lib/types/video.type'
 
 export const createCourseFn = async (fields: CreateCourseType) => {
   const formData = new FormData()
@@ -22,7 +22,10 @@ export const updateCourseFn = async (fields: CreateCourseType & { id: string }) 
   const formData = new FormData()
   formData.append('title', fields.title)
   formData.append('description', fields.description)
+
   if (Array.isArray(fields.thumbnail) && fields.thumbnail.length > 0 && fields.thumbnail[0] instanceof File) {
+    formData.append('thumbnail', fields.thumbnail[0])
+  } else if (Array.isArray(fields.thumbnail)) {
     formData.append('thumbnail', fields.thumbnail[0])
   }
 
@@ -37,16 +40,20 @@ export const deleteCourseFn = async (id: string) => {
   return await api.delete(`/course/${id}`)
 }
 
-export const publishCourseFn = async (id: string) => {
-  return await api.put(`/course/${id}/publish`)
+type PublishCourseType = {
+  id: string
+  published: boolean
+}
+
+export const publishCourseFn = async (fields: PublishCourseType) => {
+  return await api.put(`/course/${fields.id}/publish`, { published: fields.published })
 }
 
 export const getCoursesFn = async (search: string, page: number): Promise<CourseResponseType> => {
   const response = await api.get('/course', {
     params: {
-      search,
-      page,
-      limit: 30
+      q: search,
+      page
     }
   })
 
@@ -58,8 +65,9 @@ export const getCourseByIdFn = async (id: string): Promise<CourseType> => {
   return response.data?.data
 }
 
-export const getVideosByCourseIdFn = async (id: string): Promise<VideoType[]> => {
-  return await api.get(`/course/${id}/videos`)
+export const getVideosByCourseIdFn = async (id: string): Promise<VideoResponseType> => {
+  const response = await api.get(`/course/${id}/videos`)
+  return response.data
 }
 
 export const joinCourseFn = async (id: string) => {

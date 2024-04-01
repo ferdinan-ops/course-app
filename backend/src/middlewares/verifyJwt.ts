@@ -28,8 +28,6 @@ const verifyJwt = (req: Request, res: Response, next: NextFunction) => {
 
     const { id, role } = decoded as DecodedToken
 
-    console.log(decoded)
-
     req.userId = id
     req.role = role
     next()

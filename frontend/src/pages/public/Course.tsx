@@ -1,4 +1,4 @@
-import { CourseSearch, Pagination } from '@/components/atoms'
+import { CourseSearch } from '@/components/atoms'
 import { Container, CourseCard, Heading } from '@/components/organisms'
 
 export default function Course() {
@@ -16,7 +16,7 @@ export default function Course() {
           <CourseCard key={i} />
         ))}
       </div>
-      <Pagination />
+      {/* <Pagination /> */}
     </Container>
   )
 }

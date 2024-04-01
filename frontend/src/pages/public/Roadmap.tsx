@@ -1,28 +1,13 @@
 import { Container, Heading, RoadmapCard } from '@/components/organisms'
-
-export const roadmaps = [
-  'Frontend',
-  'Backend',
-  'DevOps',
-  'Fullstack',
-  'Android',
-  'PostgreSQL',
-  'AI and Data Scientist',
-  'Blockchain',
-  'Quality Assurance',
-  'Software Architect',
-  'ASP.NET Core',
-  'C++',
-  'Flutter',
-  'Cyber Security',
-  'UX Design',
-  'React Native',
-  'Game Developer',
-  'Technical Writer',
-  'Machine Learning Ops'
-]
+import { useGetRoadmaps } from '@/store/server/useRoadmap'
 
 export default function Roadmap() {
+  const { data: roadmaps, isSuccess } = useGetRoadmaps()
+
+  if (!isSuccess) {
+    return <p>Loading...</p>
+  }
+
   return (
     <section className="bg-[#F6F8FD]">
       <Container>
@@ -35,7 +20,7 @@ export default function Roadmap() {
         </Heading>
         <section className="mt-20 grid grid-cols-4 gap-8">
           {roadmaps.map((roadmap, i) => (
-            <RoadmapCard key={i} title={roadmap} countClass={10} />
+            <RoadmapCard key={i} title={roadmap.title} countClass={roadmap.courses.length} />
           ))}
         </section>
       </Container>

@@ -45,7 +45,7 @@ export const useDeleteRoadmap = () => {
 }
 
 export const useGetRoadmap = (id: string) => {
-  return useQuery(['roadmaps', id], async () => await getRoadmapByIdFn(id))
+  return useQuery(['roadmaps', id], async () => await getRoadmapByIdFn(id), { enabled: !!id })
 }
 
 export const useGetRoadmaps = () => {

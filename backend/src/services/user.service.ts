@@ -28,7 +28,7 @@ export const processPhoto = async (oldPhoto: string, filename: string) => {
   if (oldPhoto !== '') await deleteFile(oldPhoto)
   const compressedPhoto = await compressedFile(filename)
   if (compressedPhoto) {
-    return compressedPhoto
+    return compressedPhoto as string
   } else {
     logger.error('Gagal mengubah foto')
     return oldPhoto

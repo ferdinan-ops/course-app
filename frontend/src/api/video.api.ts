@@ -2,11 +2,13 @@ import { CreateVideoType } from '@/lib/validations/video.validation'
 import api from './axiosInstance'
 import { VideoType } from '@/lib/types/video.type'
 
-export const createVideoFn = async (fields: CreateVideoType) => {
+type CreateVideoParams = CreateVideoType & { course_id: string }
+
+export const createVideoFn = async (fields: CreateVideoParams) => {
   return await api.post('/video', fields)
 }
 
-export const updateVideoFn = async (fields: CreateVideoType & { id: string }) => {
+export const updateVideoFn = async (fields: CreateVideoParams & { id: string }) => {
   const { id, ...rest } = fields
   return await api.put(`/video/${id}`, rest)
 }

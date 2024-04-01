@@ -72,11 +72,11 @@ export const useGetCourses = (search: string, page: number) => {
 }
 
 export const useGetCourse = (id: string) => {
-  return useQuery(['course', id], () => getCourseByIdFn(id))
+  return useQuery(['course', id], () => getCourseByIdFn(id), { enabled: !!id })
 }
 
-export const useGetVideosByCourseId = (id: string) => {
-  return useQuery(['course', 'videos', id], () => getVideosByCourseIdFn(id))
+export const useGetVideos = (id: string) => {
+  return useQuery(['course', 'videos', id], () => getVideosByCourseIdFn(id), { enabled: !!id })
 }
 
 export const useJoinCourse = () => {

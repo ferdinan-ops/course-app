@@ -14,7 +14,7 @@ export default function ImagePreview({ image, onShow }: ImagePreviewProps) {
       <Button className="absolute right-4 top-4" size="icon" onClick={onShow}>
         <HiXMark className="m-auto text-xl md:text-2xl" />
       </Button>
-      <img src={image} alt="preview" className="m-auto w-full px-6 sm:h-[90%] sm:w-auto md:px-0" />
+      <img src={image} alt="preview" className="m-auto w-full px-6 sm:max-h-[90%] sm:w-auto md:px-0" />
     </div>
   )
 }

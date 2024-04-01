@@ -5,6 +5,7 @@ import * as React from 'react'
 import { useFormContext } from 'react-hook-form'
 import { bytesToSize } from '@/lib/utils'
 import { usePreviewImage } from '@/store/client'
+import ENV from '@/lib/environment'
 
 export type FileWithPreview = FileWithPath & { preview: string }
 interface DropZoneProps {
@@ -13,7 +14,7 @@ interface DropZoneProps {
   setValue: (value: unknown, options?: { shouldValidate?: boolean }) => void
   fileValue?: FileWithPreview[]
   maxFileSize?: number
-  closedModal: () => void
+  closedModal?: () => void
 }
 
 export default function Dropzone({ accept, id, setValue, fileValue, maxFileSize, closedModal }: DropZoneProps) {
@@ -93,7 +94,7 @@ export default function Dropzone({ accept, id, setValue, fileValue, maxFileSize,
 
   const handlePreview = (preview: string) => {
     setPreviewImage(preview)
-    closedModal()
+    closedModal && closedModal()
   }
 
   const { getInputProps, getRootProps } = useDropzone({
@@ -119,7 +120,7 @@ export default function Dropzone({ accept, id, setValue, fileValue, maxFileSize,
                 <button
                   type="button"
                   className="flex h-7 w-7 cursor-pointer rounded hover:bg-slate-200 dark:hover:bg-zinc-700"
-                  onClick={() => handlePreview(URL.createObjectURL(file))}
+                  onClick={() => handlePreview(file.name ? URL.createObjectURL(file) : `${ENV.storageUrl}/${file}`)}
                 >
                   <HiOutlineEye className="m-auto text-xl text-zinc-900/40 dark:text-white/40" />
                 </button>

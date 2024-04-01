@@ -69,9 +69,11 @@ export default function App() {
                 <Route path="create" element={<CreateCourse />} />
 
                 <Route path=":courseId">
+                  <Route index element={<CreateCourse />} />
                   <Route path="video">
                     <Route index element={<VideoCourse />} />
                     <Route path="create" element={<CreateVideo />} />
+                    <Route path=":videoId" element={<CreateVideo />} />
                   </Route>
                 </Route>
               </Route>
@@ -79,6 +81,7 @@ export default function App() {
               <Route path="roadmap">
                 <Route index element={<AdminRoadmap />} />
                 <Route path="create" element={<CreateRoadmap />} />
+                <Route path=":roadmapId" element={<CreateRoadmap />} />
               </Route>
             </Route>
           </Route>

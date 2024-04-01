@@ -1,8 +1,19 @@
 import db from '../utils/db'
-import { type ICourse } from '../types/course.type'
+import { type ICourseUpdate, type ICourse } from '../types/course.type'
+import { compressedFile } from '../utils/fileSettings'
+import { processPhoto } from './user.service'
 
 export const addNewCourse = async (fields: ICourse, userId: string) => {
-  return await db.course.create({ data: { admin_id: userId, ...fields } })
+  console.log({ fields, userId })
+  const compressedImage = await compressedFile(fields.thumbnail)
+  return await db.course.create({
+    data: {
+      admin_id: userId,
+      title: fields.title,
+      thumbnail: compressedImage as string,
+      description: fields.description
+    }
+  })
 }
 
 export const getAllCourses = async (page: number, limit: number, search: string) => {
@@ -15,7 +26,7 @@ export const getAllCourses = async (page: number, limit: number, search: string)
       take: limit,
       include: {
         _count: {
-          select: { videos: true }
+          select: { videos: true, members: true }
         }
       },
       orderBy: { created_at: 'desc' }
@@ -34,8 +45,24 @@ export const getCourseById = async (courseId: string) => {
   return await db.course.findUnique({ where: { id: courseId } })
 }
 
-export const updateCourseById = async (courseId: string, fields: ICourse) => {
-  return await db.course.update({ where: { id: courseId }, data: fields })
+export const updateCourseById = async (courseId: string, fields: ICourseUpdate) => {
+  const course = await getCourseById(courseId)
+  if (!course) throw new Error('Course not found')
+
+  let newThumbnail = course.thumbnail
+  if (fields.thumbnail && typeof fields.thumbnail === 'string') {
+    const oldThumbnail = course.thumbnail
+    newThumbnail = await processPhoto(oldThumbnail, fields.thumbnail)
+  }
+
+  return await db.course.update({
+    where: { id: courseId },
+    data: {
+      title: fields.title,
+      description: fields.description,
+      thumbnail: newThumbnail
+    }
+  })
 }
 
 export const deleteCourseById = async (courseId: string) => {

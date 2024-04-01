@@ -1,3 +1,5 @@
+import { MetaType } from './course.type'
+
 export type VideoType = {
   id: string
   title: string
@@ -6,4 +8,10 @@ export type VideoType = {
   description: string
   created_at: string
   updated_at: string
+}
+
+export type VideoResponseType = {
+  message: string
+  data: VideoType[]
+  meta: MetaType
 }

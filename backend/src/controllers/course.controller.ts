@@ -14,8 +14,13 @@ export const createCourse = async (req: Request, res: Response) => {
     return res.status(400).json({ error: error.details[0].message })
   }
 
+  const { title, description } = value
+  const fields = { title, description, thumbnail: req.file?.filename as string }
+
+  console.log({ fields })
+
   try {
-    const data = await CourseService.addNewCourse(value, req.userId as string)
+    const data = await CourseService.addNewCourse(fields, req.userId as string)
     logInfo(req, 'Creating new course')
     res.status(200).json({ message: 'Berhasil membuat course baru', data })
   } catch (error) {
@@ -30,8 +35,15 @@ export const updateCourse = async (req: Request, res: Response) => {
     return res.status(400).json({ error: error.details[0].message })
   }
 
+  const { title, description } = value
+  const fields = {
+    title,
+    description,
+    thumbnail: req.file ? req.file.filename : undefined
+  }
+
   try {
-    const data = await CourseService.updateCourseById(req.params.courseId, value)
+    const data = await CourseService.updateCourseById(req.params.courseId, fields)
     logInfo(req, 'Updating course data')
     res.status(200).json({ message: 'Berhasil mengubah data course', data })
   } catch (error) {
@@ -67,7 +79,6 @@ export const getCourses = async (req: Request, res: Response) => {
         total: count
       }
     })
-    res.status(200).json(data)
   } catch (error) {
     res.status(500).json({ error })
   }

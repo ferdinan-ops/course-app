@@ -45,5 +45,5 @@ export const useDeleteVideo = () => {
 }
 
 export const useGetVideo = (id: string) => {
-  return useQuery(['videos', id], async () => await getVideoByIdFn(id))
+  return useQuery(['videos', id], async () => await getVideoByIdFn(id), { enabled: !!id })
 }
