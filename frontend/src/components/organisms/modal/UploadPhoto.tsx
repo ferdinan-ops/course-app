@@ -23,9 +23,10 @@ import { useUpdateProfilePic } from '@/store/server/useUser'
 interface UploadPhotoProps {
   user: UserType
   className?: string
+  imageClassName?: string
 }
 
-export default function UploadPhoto({ user, className }: UploadPhotoProps) {
+export default function UploadPhoto({ user, className, imageClassName }: UploadPhotoProps) {
   const [open, setOpen] = React.useState(false)
   const { mutate: updateProfilePic, isLoading } = useUpdateProfilePic()
 
@@ -45,9 +46,14 @@ export default function UploadPhoto({ user, className }: UploadPhotoProps) {
   return (
     <Dialog open={open} onOpenChange={setOpen}>
       <DialogTrigger asChild>
-        <div className="group relative mx-auto mb-8 h-[200px] w-[200px] cursor-pointer overflow-hidden rounded-full">
+        <div
+          className={cn(
+            'group relative mx-auto mb-8 h-[200px] w-[200px] cursor-pointer overflow-hidden rounded-full text-4xl  md:text-6xl',
+            imageClassName
+          )}
+        >
           <div className="absolute inset-0 z-[2] flex bg-font/60 opacity-0 transition-opacity group-hover:opacity-100">
-            <HiCamera className="m-auto text-4xl text-white md:text-6xl" />
+            <HiCamera className="m-auto text-white" />
           </div>
           <Image alt={user?.fullname} src={user?.photo} className="relative z-[1] h-full w-full object-cover" />
         </div>

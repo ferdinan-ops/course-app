@@ -1,25 +1,45 @@
-import { Image } from '@/components/atoms'
-import { Heading } from '@/components/organisms'
+import { Alert, EditEmail, Heading, UploadPhoto } from '@/components/organisms'
 import { Button } from '@/components/ui/button'
 import { Form, FormControl, FormField, FormItem, FormLabel, FormMessage } from '@/components/ui/form'
 import { Input } from '@/components/ui/input'
+import { editProfileDefaultValues } from '@/lib/defaultValues'
+import { UserType } from '@/lib/types/user.type'
+import { EditUserType, editUserValidation } from '@/lib/validations/user.validation'
 import { useUserInfo } from '@/store/client'
+import { useLogout } from '@/store/server/useAuth'
+import { useUpdateMe } from '@/store/server/useUser'
+import { yupResolver } from '@hookform/resolvers/yup'
 import * as React from 'react'
 import { useForm } from 'react-hook-form'
-import {
-  HiCamera,
-  HiOutlineArrowLeftOnRectangle,
-  HiOutlineCog6Tooth,
-  HiOutlineEnvelope,
-  HiOutlineLockClosed,
-  HiOutlineUser
-} from 'react-icons/hi2'
+import { HiOutlineArrowLeftOnRectangle, HiOutlineCog6Tooth, HiOutlineLockClosed, HiOutlineUser } from 'react-icons/hi2'
+import { useNavigate } from 'react-router-dom'
 
 export default function AdminProfile() {
+  const navigate = useNavigate()
   const user = useUserInfo((state) => state.user)
 
-  const forms = useForm()
-  const onSubmit = () => {}
+  const { mutate: logout } = useLogout()
+  const { mutate: updateMe, isLoading } = useUpdateMe()
+
+  const forms = useForm<EditUserType>({
+    mode: 'onTouched',
+    resolver: yupResolver(editUserValidation),
+    defaultValues: editProfileDefaultValues
+  })
+
+  React.useEffect(() => {
+    forms.setValue('fullname', user?.fullname as string)
+    forms.setValue('username', user?.username as string)
+  }, [user, forms])
+
+  const onSubmit = (values: EditUserType) => {
+    updateMe(values)
+  }
+
+  const handleLogout = () => {
+    logout()
+    navigate('/')
+  }
 
   return (
     <React.Fragment>
@@ -31,16 +51,7 @@ export default function AdminProfile() {
         </div>
       </Heading>
       <section className="mx-auto mt-16 w-6/12">
-        <div className="group relative mx-auto mb-8 h-[200px] w-[200px] cursor-pointer overflow-hidden rounded-full">
-          <div className="absolute inset-0 z-[2] flex bg-font/60 opacity-0 transition-opacity group-hover:opacity-100">
-            <HiCamera className="m-auto text-4xl text-white md:text-6xl" />
-          </div>
-          <Image
-            src={user?.photo}
-            alt={user?.fullname as string}
-            className="relative z-[1] h-full w-full object-cover"
-          />
-        </div>
+        <UploadPhoto user={user as UserType} />
         <Form {...forms}>
           <form onSubmit={forms.handleSubmit(onSubmit)} className="flex flex-col gap-4">
             <FormField
@@ -69,7 +80,9 @@ export default function AdminProfile() {
                 </FormItem>
               )}
             />
-            <Button className="ml-auto mt-2 w-fit">Save Changes</Button>
+            <Button className="ml-auto mt-2 w-fit" loading={isLoading}>
+              Save Changes
+            </Button>
           </form>
         </Form>
         <div className="mt-8 border-t pt-5 text-font">
@@ -78,18 +91,26 @@ export default function AdminProfile() {
             User Settings
           </p>
           <div className="flex items-center gap-4">
-            <Button className="w-fit gap-2.5 text-xs" variant="outline">
+            <Button
+              variant="outline"
+              className="w-fit gap-2.5 text-xs"
+              onClick={() => navigate('/admin/profile/change-password')}
+            >
               <HiOutlineLockClosed className="text-lg" />
               Reset Password
             </Button>
-            <Button className="w-fit gap-2.5 bg-zinc-200 text-xs hover:bg-zinc-300" variant="ghost">
-              <HiOutlineEnvelope className="text-lg" />
-              Change Email
-            </Button>
-            <Button className="w-fit gap-2.5 text-xs" variant="destructive">
-              <HiOutlineArrowLeftOnRectangle className="text-lg" />
-              Sign Out from App
-            </Button>
+            <EditEmail email={user?.email as string} />
+            <Alert
+              title="Comeback soon?"
+              desc="Are you sure you want to sign out of the app?"
+              btnText="sign out"
+              action={handleLogout}
+            >
+              <Button className="w-fit gap-2.5 text-xs" variant="destructive">
+                <HiOutlineArrowLeftOnRectangle className="text-lg" />
+                Sign Out from App
+              </Button>
+            </Alert>
           </div>
         </div>
       </section>

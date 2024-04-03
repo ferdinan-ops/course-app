@@ -60,8 +60,8 @@ export default function AdminSidebar() {
         <div className="flex w-full flex-col items-center gap-4 rounded-xl bg-font/90 p-4">
           <Image src={user?.photo} alt={user?.fullname as string} className="h-14 w-14 rounded-full" />
           <div className="flex flex-col items-center">
-            <p className="max-w-[160px] truncate text-sm font-semibold text-white">{user?.username}</p>
-            <p className="truncate text-xs font-medium text-white/50">{user?.role}</p>
+            <p className="max-w-[160px] truncate text-sm font-semibold text-white">{user?.fullname}</p>
+            <p className="truncate text-xs font-medium text-white/50">@{user?.username}</p>
           </div>
           <Alert
             title="Comeback soon?"
