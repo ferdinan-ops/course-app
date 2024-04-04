@@ -70,7 +70,7 @@ export default function CreateCourse() {
               <FormItem>
                 <FormLabel className="font-semibold">Title</FormLabel>
                 <FormControl>
-                  <Input {...field} value={field.value ?? ''} placeholder="John Doe" />
+                  <Input {...field} value={field.value ?? ''} placeholder="Type the title of the course" />
                 </FormControl>
                 <FormMessage />
               </FormItem>

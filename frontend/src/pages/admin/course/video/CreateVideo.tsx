@@ -66,7 +66,7 @@ export default function CreateVideo() {
               <FormItem>
                 <FormLabel className="font-semibold">Title</FormLabel>
                 <FormControl>
-                  <Input {...field} value={field.value ?? ''} placeholder="John Doe" />
+                  <Input {...field} value={field.value ?? ''} placeholder="Type the title of the video" />
                 </FormControl>
                 <FormMessage />
               </FormItem>
@@ -79,7 +79,7 @@ export default function CreateVideo() {
               <FormItem>
                 <FormLabel className="font-semibold">Youtube Link</FormLabel>
                 <FormControl>
-                  <Input {...field} value={field.value ?? ''} placeholder="https://youtu.be/random" />
+                  <Input {...field} value={field.value ?? ''} placeholder="https://youtu.be/..." />
                 </FormControl>
                 <FormMessage />
               </FormItem>

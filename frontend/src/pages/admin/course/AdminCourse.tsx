@@ -1,29 +1,64 @@
-import { AdminAction, Image, Pagination } from '@/components/atoms'
+import { AdminAction, Image, Loading, Pagination, TableSearch } from '@/components/atoms'
 import { Heading } from '@/components/organisms'
 import { Button } from '@/components/ui/button'
+import { Form, FormField, FormItem } from '@/components/ui/form'
 import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from '@/components/ui/table'
 import { useQueryParams, useTitle } from '@/hooks'
 import { cn, formatDate } from '@/lib/utils'
-import { useGetCourses, usePublishCourse } from '@/store/server/useCourse'
+import { useDialog } from '@/store/client'
+import { useDeleteCourse, useGetCourses, usePublishCourse } from '@/store/server/useCourse'
 import * as React from 'react'
+import { useForm } from 'react-hook-form'
 import { HiOutlineBookOpen, HiOutlineEye, HiOutlineEyeSlash, HiOutlineVideoCamera, HiPlus } from 'react-icons/hi2'
 import { useNavigate } from 'react-router-dom'
+
+interface FormFields {
+  search: string
+}
 
 export default function AdminCourse() {
   useTitle('Admin ~ Course')
   const navigate = useNavigate()
 
-  const { params, createParam } = useQueryParams(['page', 'search'])
-  const { data: courses, isSuccess } = useGetCourses(params.search || '', Number(params.page) || 1)
-
+  const { dialog } = useDialog()
+  const forms = useForm<FormFields>()
   const { mutate: publishCourse } = usePublishCourse()
+  const { mutateAsync: deleteCourse } = useDeleteCourse()
+  const { params, createParam, deleteParam } = useQueryParams(['page', 'search'])
 
-  if (!isSuccess) {
-    return <div>Loading...</div>
+  const {
+    data: courses,
+    isFetching,
+    refetch
+  } = useGetCourses({
+    search: params.search || '',
+    page: Number(params.page) || 1
+  })
+
+  const onSubmit = (data: FormFields) => {
+    if (data.search === '') {
+      deleteParam('search')
+    } else {
+      createParam({ key: 'search', value: data.search })
+    }
+
+    refetch()
+  }
+
+  const handleDelete = (courseId: string) => {
+    void dialog({
+      title: 'Are you sure?',
+      description: 'This will delete the course and all its videos',
+      variant: 'danger',
+      submitText: 'Delete'
+    }).then(async () => {
+      await deleteCourse(courseId)
+    })
   }
 
   return (
     <React.Fragment>
+      {isFetching && <Loading />}
       <Heading className="flex items-center gap-5 text-font">
         <Heading.Icon icon={HiOutlineBookOpen} />
         <div className="flex flex-col">
@@ -36,6 +71,19 @@ export default function AdminCourse() {
           <HiPlus className="text-xl" />
           <span className="text-[13px]">Add new course</span>
         </Button>
+        <Form {...forms}>
+          <form onSubmit={forms.handleSubmit(onSubmit)} className="w-4/12">
+            <FormField
+              name="search"
+              control={forms.control}
+              render={({ field }) => (
+                <FormItem className="w-full">
+                  <TableSearch {...field} value={field.value ?? ''} placeholder="Search..." />
+                </FormItem>
+              )}
+            />
+          </form>
+        </Form>
       </div>
 
       <Table className="mt-6 overflow-hidden rounded-md text-font">
@@ -52,7 +100,7 @@ export default function AdminCourse() {
           </TableRow>
         </TableHeader>
         <TableBody>
-          {courses.data?.map((course) => (
+          {courses?.data?.map((course) => (
             <TableRow key={course.id} className="text-[13px]">
               <TableCell>
                 <Image src={course.thumbnail} alt={course.title} className="w-36 rounded-md object-cover md:h-20" />
@@ -77,7 +125,7 @@ export default function AdminCourse() {
               <TableCell position="center">
                 <AdminAction>
                   <AdminAction.Item type="edit" onClick={() => navigate(`/admin/course/${course.id}`)} />
-                  <AdminAction.Item type="delete" />
+                  <AdminAction.Item type="delete" onClick={() => handleDelete(course.id)} />
                   <AdminAction.Item
                     label={course.is_published ? 'Unpublish' : 'Publish'}
                     icon={course.is_published ? HiOutlineEyeSlash : HiOutlineEye}
@@ -94,10 +142,10 @@ export default function AdminCourse() {
           ))}
         </TableBody>
       </Table>
-      {courses.meta.total >= 10 ? (
+      {courses?.meta && courses?.meta?.total > 10 ? (
         <Pagination
-          pageSize={courses.meta.limit as number}
-          totalCount={courses.meta.total as number}
+          pageSize={courses?.meta.limit as number}
+          totalCount={courses?.meta.total as number}
           currentPage={params.page !== '' ? parseInt(params.page) : 1}
           onPageChange={(page) => createParam({ key: 'page', value: page.toString() })}
         />

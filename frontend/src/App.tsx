@@ -19,9 +19,12 @@ import { UserSettings } from './pages/user'
 import { Home, Course, DetailCourse, Roadmap, DetailRoadmap } from './pages/public'
 import { ForgotPassword, Login, Register, ResetPassword, VerifyEmail } from './pages/auth'
 
-import { usePreviewImage } from './store/client'
+import { useDialog, usePreviewImage } from './store/client'
+import { Dialog } from './components/organisms'
+import { DialogOptions } from './components/organisms/Dialog'
 
 export default function App() {
+  const { dialogOptions, handleClose, handleSubmit } = useDialog()
   const { previewImage, setPreviewImage } = usePreviewImage((state) => ({
     previewImage: state.previewImage,
     setPreviewImage: state.setPreviewImage
@@ -29,6 +32,12 @@ export default function App() {
 
   return (
     <React.Fragment>
+      <Dialog
+        open={Boolean(dialogOptions)}
+        onSubmit={handleSubmit}
+        onClose={handleClose}
+        {...(dialogOptions as DialogOptions)}
+      />
       {previewImage && <ImagePreview image={previewImage} onShow={() => setPreviewImage('')} />}
       <Toaster />
       <Routes>

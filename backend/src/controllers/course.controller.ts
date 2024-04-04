@@ -62,22 +62,35 @@ export const deleteCourse = async (req: Request, res: Response) => {
 }
 
 export const getCourses = async (req: Request, res: Response) => {
-  const { page, limit, q } = req.query
+  const { page, limit, q, type } = req.query
   const currentPage = Number(page) || 1
   const perPage = Number(limit) || 10
 
-  try {
-    const { data, count } = await CourseService.getAllCourses(currentPage, perPage, q as string)
+  const meta = { current_page: currentPage, limit: perPage }
 
-    logInfo(req, 'Fetching all courses')
-    res.status(200).json({
-      message: 'Berhasil mendapatkan semua course',
-      data,
-      meta: {
-        current_page: currentPage,
-        limit: perPage,
-        total: count
+  try {
+    if (req.role === 'ADMIN') {
+      if (type === 'public') {
+        const data = await CourseService.getAllCoursesPublished()
+        logInfo(req, 'Fetching all published courses')
+        return res.status(200).json({ message: 'Berhasil mendapatkan semua course yang dipublish', data })
       }
+
+      const { data, count } = await CourseService.getAllCourses(currentPage, perPage, q as string)
+      logInfo(req, 'Fetching all courses')
+      return res.status(200).json({
+        message: 'Berhasil mendapatkan semua course',
+        data,
+        meta: { ...meta, total: count }
+      })
+    }
+
+    const { data, count } = await CourseService.getCoursesByPublished(currentPage, perPage)
+    logInfo(req, 'Fetching published courses')
+    res.status(200).json({
+      message: 'Berhasil mendapatkan semua course yang dipublish',
+      data,
+      meta: { ...meta, total: count }
     })
   } catch (error) {
     res.status(500).json({ error })
@@ -85,8 +98,16 @@ export const getCourses = async (req: Request, res: Response) => {
 }
 
 export const getCourse = async (req: Request, res: Response) => {
+  let data
+  const courseId = req.params.courseId
+
   try {
-    const data = await CourseService.getCourseById(req.params.courseId)
+    if (req.role === 'ADMIN') {
+      data = await CourseService.getCourseById(courseId)
+    } else {
+      data = await CourseService.getPublishedCourseById(courseId)
+    }
+
     if (!data) {
       logError(req, 'Course not found')
       return res.status(404).json({ error: 'Course tidak ditemukan' })
@@ -138,7 +159,7 @@ export const leaveCourse = async (req: Request, res: Response) => {
 
 export const getVideos = async (req: Request, res: Response) => {
   try {
-    const data = await VideoService.getVideosByCourseId(req.params.courseId)
+    const data = await VideoService.getVideosByCourseId(req.params.courseId, req.query.q as string)
 
     logInfo(req, 'Fetching video by course')
     res.status(200).json({ message: 'Berhasil mendapatkan video', data })

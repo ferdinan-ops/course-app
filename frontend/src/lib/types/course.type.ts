@@ -1,3 +1,5 @@
+import { VideoType } from './video.type'
+
 export type CourseType = {
   id: string
   title: string
@@ -6,7 +8,8 @@ export type CourseType = {
   is_published: boolean
   created_at: string
   updated_at: string
-}
+  videos: VideoType[]
+} & CourseCountType
 
 export type MetaType = {
   current_page: number
@@ -21,10 +24,8 @@ type CourseCountType = {
   }
 }
 
-type CourseListType = CourseType & CourseCountType
-
 export type CourseResponseType = {
   message: string
-  data: CourseListType[]
+  data: CourseType[]
   meta: MetaType
 }

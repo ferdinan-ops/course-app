@@ -2,6 +2,7 @@ import { HeroImage, PrivilegeIllustration } from '@/assets'
 import { CourseCard, HomeSection, Heading } from '@/components/organisms'
 import { Button } from '@/components/ui/button'
 import { useTitle } from '@/hooks'
+import { useGetCourses } from '@/store/server/useCourse'
 import * as React from 'react'
 import { HiArrowRight, HiCheck } from 'react-icons/hi2'
 
@@ -14,6 +15,7 @@ const privileges = [
 
 export default function Home() {
   useTitle('Home')
+  const { data: courses } = useGetCourses({ page: 1 })
 
   return (
     <React.Fragment>
@@ -70,9 +72,7 @@ export default function Home() {
             </Heading>
           </HomeSection.Body>
           <div className="grid grid-cols-1 gap-8 md:grid-cols-2 lg:grid-cols-3">
-            {[...Array(3)].map((_, i) => (
-              <CourseCard key={i} />
-            ))}
+            {courses?.data.slice(0, 3).map((course) => <CourseCard key={course.id} course={course} />)}
           </div>
           <Button className="mx-auto gap-2.5 lg:rounded-full" variant="secondary">
             <p className="text-[13px]">See More</p>

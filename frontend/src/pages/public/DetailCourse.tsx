@@ -1,7 +1,10 @@
+import { Loading, Markdown } from '@/components/atoms'
 import { CommentCard, CommentForm, Container, Heading } from '@/components/organisms'
 import { Button } from '@/components/ui/button'
 import { useToken } from '@/store/client'
+import { useGetCourse } from '@/store/server/useCourse'
 import { HiArrowLeft, HiArrowRight, HiLockClosed, HiPlayCircle } from 'react-icons/hi2'
+import { useParams } from 'react-router-dom'
 
 const courseDummy = [
   { title: 'Semantic HTML', duration: '11:25' },
@@ -14,14 +17,18 @@ const courseDummy = [
 ]
 
 export default function DetailCourse() {
+  const { courseId } = useParams<{ courseId: string }>()
   const token = useToken((state) => state.accessToken)
+  const { data: course, isSuccess } = useGetCourse(courseId as string)
+
+  if (!isSuccess) return <Loading />
 
   return (
     <Container className="xl:pb-56">
       <section className="flex items-center justify-between">
         <Heading>
-          <Heading.SubTitle className="mb-2">How to be a Frontend Developer</Heading.SubTitle>
-          <Heading.Title>HTML Basics</Heading.Title>
+          <Heading.SubTitle className="mb-2">{course.title}</Heading.SubTitle>
+          <Heading.Title>{course.videos[0].title}</Heading.Title>
         </Heading>
         {token ? (
           <div className="flex items-center gap-4">
@@ -47,18 +54,8 @@ export default function DetailCourse() {
             <HiPlayCircle className="m-auto cursor-pointer text-6xl text-white" />
           </div>
           <div className="mt-8">
-            <h1 className="text-2xl font-semibold text-font">About Course</h1>
-            <p className="mt-2.5 text-[15px] leading-relaxed text-font">
-              HTML (Hypertext Markup Language) is the code that is used to structure a web page and its content. For
-              example, content could be structured within a set of paragraphs, a list of bulleted points, or using
-              images and data tables. As the title suggests, this article will give you a basic understanding of HTML
-              and its functions.
-            </p>
-            <p className="mt-2.5 text-[15px] leading-relaxed text-font">
-              HTML is the beginning of everything you need to know to create engaging web pages! Take-Away Skills: You
-              will learn all the common HTML tags used to structure HTML pages, the skeleton of all websites. You will
-              also be able to create HTML tables to present tabular data efficiently.
-            </p>
+            <h1 className="mb-2.5 text-2xl font-semibold text-font">About Course</h1>
+            <Markdown values={course.description} />
           </div>
           <div className="mt-8 border-t-2 border-slate-200 py-5 xl:py-4">
             <div className="flex w-full flex-col gap-5">

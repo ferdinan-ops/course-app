@@ -49,11 +49,12 @@ export const publishCourseFn = async (fields: PublishCourseType) => {
   return await api.put(`/course/${fields.id}/publish`, { published: fields.published })
 }
 
-export const getCoursesFn = async (search: string, page: number): Promise<CourseResponseType> => {
+export const getCoursesFn = async (search?: string, page?: number, type?: string): Promise<CourseResponseType> => {
   const response = await api.get('/course', {
     params: {
       q: search,
-      page
+      page,
+      type
     }
   })
 
@@ -65,8 +66,12 @@ export const getCourseByIdFn = async (id: string): Promise<CourseType> => {
   return response.data?.data
 }
 
-export const getVideosByCourseIdFn = async (id: string): Promise<VideoResponseType> => {
-  const response = await api.get(`/course/${id}/videos`)
+export const getVideosByCourseIdFn = async (id: string, search?: string): Promise<VideoResponseType> => {
+  const response = await api.get(`/course/${id}/videos`, {
+    params: {
+      q: search
+    }
+  })
   return response.data
 }
 
@@ -76,4 +81,13 @@ export const joinCourseFn = async (id: string) => {
 
 export const leaveCourseFn = async (id: string) => {
   return await api.delete(`/course/${id}/leave`)
+}
+
+export const getPublishedCoursesFn = async (page: number): Promise<CourseResponseType> => {
+  const response = await api.get('/course/publish/user', {
+    params: {
+      page
+    }
+  })
+  return response.data
 }

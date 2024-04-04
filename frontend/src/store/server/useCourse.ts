@@ -3,6 +3,7 @@ import {
   deleteCourseFn,
   getCourseByIdFn,
   getCoursesFn,
+  getPublishedCoursesFn,
   getVideosByCourseIdFn,
   joinCourseFn,
   publishCourseFn,
@@ -67,16 +68,22 @@ export const usePublishCourse = () => {
   })
 }
 
-export const useGetCourses = (search: string, page: number) => {
-  return useQuery(['courses', search, page], () => getCoursesFn(search, page))
+interface GetCoursesParams {
+  search?: string
+  page?: number
+  type?: string
+}
+
+export const useGetCourses = ({ search, page, type }: GetCoursesParams) => {
+  return useQuery(['courses', search, page, type], () => getCoursesFn(search, page, type))
 }
 
 export const useGetCourse = (id: string) => {
   return useQuery(['course', id], () => getCourseByIdFn(id), { enabled: !!id })
 }
 
-export const useGetVideos = (id: string) => {
-  return useQuery(['course', 'videos', id], () => getVideosByCourseIdFn(id), { enabled: !!id })
+export const useGetVideos = (id: string, search?: string) => {
+  return useQuery(['course', 'videos', id], () => getVideosByCourseIdFn(id, search), { enabled: !!id })
 }
 
 export const useJoinCourse = () => {
@@ -105,4 +112,8 @@ export const useLeaveCourse = () => {
       })
     }
   })
+}
+
+export const useGetPublishedCourses = (page: number) => {
+  return useQuery(['courses', 'publish'], () => getPublishedCoursesFn(page))
 }

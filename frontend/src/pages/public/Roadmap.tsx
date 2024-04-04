@@ -19,8 +19,8 @@ export default function Roadmap() {
           </p>
         </Heading>
         <section className="mt-20 grid grid-cols-4 gap-8">
-          {roadmaps.map((roadmap, i) => (
-            <RoadmapCard key={i} title={roadmap.title} countClass={roadmap.courses.length} />
+          {roadmaps.map((roadmap) => (
+            <RoadmapCard key={roadmap.id} title={roadmap.title} countClass={roadmap.courses.length} />
           ))}
         </section>
       </Container>

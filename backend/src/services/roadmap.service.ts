@@ -28,6 +28,11 @@ export const updateRoadmapById = async (roadmapId: string, fields: IRoadmap) => 
     data: { title: fields.title }
   })
 
+  await db.course.updateMany({
+    where: { roadmapId },
+    data: { roadmapId: null }
+  })
+
   fields.courses.forEach(async (courseId) => {
     await db.course.update({
       where: { id: courseId },

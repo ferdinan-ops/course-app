@@ -45,6 +45,19 @@ export const getCourseById = async (courseId: string) => {
   return await db.course.findUnique({ where: { id: courseId } })
 }
 
+export const getPublishedCourseById = async (courseId: string) => {
+  return await db.course.findUnique({
+    where: { id: courseId, is_published: true },
+    include: {
+      // only include 1 video
+      videos: {
+        take: 1,
+        orderBy: { created_at: 'asc' }
+      }
+    }
+  })
+}
+
 export const updateCourseById = async (courseId: string, fields: ICourseUpdate) => {
   const course = await getCourseById(courseId)
   if (!course) throw new Error('Course not found')
@@ -106,5 +119,39 @@ export const removeMemberFromCourse = async (courseId: string, userId: string) =
         }
       }
     }
+  })
+}
+
+export const getCoursesByPublished = async (page: number, limit: number) => {
+  const [data, count] = await db.$transaction([
+    db.course.findMany({
+      where: {
+        is_published: true
+      },
+      skip: (page - 1) * limit,
+      take: limit,
+      include: {
+        _count: {
+          select: { videos: true, members: true }
+        }
+      },
+      orderBy: { created_at: 'desc' }
+    }),
+    db.course.count({
+      where: {
+        is_published: true
+      }
+    })
+  ])
+
+  return { data, count }
+}
+
+export const getAllCoursesPublished = async () => {
+  return await db.course.findMany({
+    where: {
+      is_published: true
+    },
+    orderBy: { created_at: 'desc' }
   })
 }

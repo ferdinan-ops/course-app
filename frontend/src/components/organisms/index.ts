@@ -1,4 +1,5 @@
 import Alert from './Alert'
+import Dialog from './Dialog'
 import HomeSection from './HomeSection'
 import Heading from './Heading'
 import Container from './Container'
@@ -28,5 +29,6 @@ export {
   CommentCard,
   RoadmapCard,
   EditEmail,
-  UploadPhoto
+  UploadPhoto,
+  Dialog
 }

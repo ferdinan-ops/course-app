@@ -10,13 +10,14 @@ import {
   publishCourse,
   updateCourse
 } from '../controllers/course.controller'
-import verifyJwt, { verifyAdmin } from '../middlewares/verifyJwt'
+import verifyJwt, { verifyAdmin, verifyUserRole } from '../middlewares/verifyJwt'
 import upload from '../middlewares/multer'
 
 const courseRoute = express.Router()
 
-courseRoute.get('/', verifyJwt, getCourses)
-courseRoute.get('/:courseId', verifyJwt, getCourse)
+courseRoute.get('/', verifyUserRole, getCourses)
+courseRoute.get('/:courseId', verifyUserRole, getCourse)
+
 courseRoute.get('/:courseId/videos', verifyJwt, getVideos)
 courseRoute.post('/:courseId/join', verifyJwt, joinCourse)
 courseRoute.post('/:courseId/leave', verifyJwt, leaveCourse)

@@ -1,11 +1,11 @@
-import { HiOutlineBookOpen, HiOutlinePresentationChartLine, HiOutlineSquares2X2, HiOutlineUser } from 'react-icons/hi2'
+import { HiOutlineBookOpen, HiOutlinePresentationChartLine, HiOutlineUser } from 'react-icons/hi2'
 
 export const MAIN_MENU = [
-  {
-    href: '/admin/dashboard',
-    title: 'Dashboard',
-    icon: HiOutlineSquares2X2
-  },
+  // {
+  //   href: '/admin/dashboard',
+  //   title: 'Dashboard',
+  //   icon: HiOutlineSquares2X2
+  // },
   {
     href: '/admin/course',
     title: 'Course',

@@ -1,4 +1,4 @@
-import { MultipleSelector } from '@/components/atoms'
+import { BackButton, Loading, MultipleSelector } from '@/components/atoms'
 import { Heading } from '@/components/organisms'
 import { Button } from '@/components/ui/button'
 import { Form, FormControl, FormField, FormItem, FormLabel, FormMessage } from '@/components/ui/form'
@@ -19,7 +19,7 @@ export default function CreateRoadmap() {
   const navigate = useNavigate()
   useTitle(`${roadmapId ? 'Update' : 'Create'} Roadmap`)
 
-  const { data: courses, isSuccess: successCourse } = useGetCourses('', 1)
+  const { data: courses, isSuccess: successCourse } = useGetCourses({ type: 'public' })
   const { data: roadmap, isSuccess: successRoadmap } = useGetRoadmap(roadmapId as string)
 
   const { mutate: createRoadmap, isLoading: loadingCreate } = useCreateRoadmap()
@@ -46,22 +46,22 @@ export default function CreateRoadmap() {
   }
 
   const onSubmit = (values: CreateRoadmapType) => {
+    // console.log(values)
     if (!roadmapId) return createRoadmap(values, { onSuccess })
     updateRoadmap({ ...values, id: roadmapId }, { onSuccess })
   }
 
-  if (!successCourse) {
-    return <div>Loading...</div>
-  }
+  if (!successCourse) return <Loading />
 
   const options =
-    courses.data?.map((course) => ({
+    courses.data.map((course) => ({
       value: course.id,
       label: course.title
     })) ?? []
 
   return (
     <React.Fragment>
+      <BackButton />
       <Heading className="mx-auto flex w-6/12 flex-col gap-1 text-font">
         <Heading.Title>{roadmapId ? 'Edit' : 'Create'} Roadmap</Heading.Title>
         <Heading.SubTitle className="text-font/80">
@@ -78,7 +78,7 @@ export default function CreateRoadmap() {
               <FormItem>
                 <FormLabel className="font-semibold">Title</FormLabel>
                 <FormControl>
-                  <Input {...field} value={field.value ?? ''} placeholder="John Doe" />
+                  <Input {...field} value={field.value ?? ''} placeholder="Type the title of the roadmap" />
                 </FormControl>
                 <FormMessage />
               </FormItem>
@@ -95,7 +95,7 @@ export default function CreateRoadmap() {
                     defaultOptions={options}
                     value={field.value ?? []}
                     onChange={(value) => field.onChange(value)}
-                    placeholder="Select frameworks you like..."
+                    placeholder="Select published courses you like"
                     // badgeClassName="bg-primary hover:bg-primary/90"
                     badgeClassName="border border-primary text-primary hover:bg-primary hover:text-white bg-white cursor-pointer"
                     emptyIndicator={

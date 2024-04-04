@@ -17,6 +17,12 @@ export const deleteVideoById = async (videoId: string) => {
   return await db.video.delete({ where: { id: videoId } })
 }
 
-export const getVideosByCourseId = async (courseId: string) => {
-  return await db.video.findMany({ where: { course_id: courseId } })
+export const getVideosByCourseId = async (courseId: string, search: string) => {
+  return await db.video.findMany({
+    where: {
+      course_id: courseId,
+      OR: [{ title: { contains: search } }, { description: { contains: search } }]
+    },
+    orderBy: { created_at: 'asc' }
+  })
 }
