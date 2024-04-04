@@ -53,6 +53,9 @@ export const getPublishedCourseById = async (courseId: string) => {
       videos: {
         take: 1,
         orderBy: { created_at: 'asc' }
+      },
+      _count: {
+        select: { videos: true, members: true }
       }
     }
   })

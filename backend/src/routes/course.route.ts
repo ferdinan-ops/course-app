@@ -17,8 +17,8 @@ const courseRoute = express.Router()
 
 courseRoute.get('/', verifyUserRole, getCourses)
 courseRoute.get('/:courseId', verifyUserRole, getCourse)
+courseRoute.get('/:courseId/videos', verifyUserRole, getVideos)
 
-courseRoute.get('/:courseId/videos', verifyJwt, getVideos)
 courseRoute.post('/:courseId/join', verifyJwt, joinCourse)
 courseRoute.post('/:courseId/leave', verifyJwt, leaveCourse)
 

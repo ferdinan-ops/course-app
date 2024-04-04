@@ -5,13 +5,15 @@ import userRoute from './user.route'
 import courseRoute from './course.route'
 import videoRoute from './video.route'
 import roadmapRoute from './roadmap.route'
+import memberRoute from './member.route'
 
 const _routes = [
   ['/auth', authRoute],
   ['/user', userRoute],
   ['/course', courseRoute],
   ['/video', videoRoute],
-  ['/roadmap', roadmapRoute]
+  ['/roadmap', roadmapRoute],
+  ['/member', memberRoute]
 ]
 
 const routes = (app: Application) => {

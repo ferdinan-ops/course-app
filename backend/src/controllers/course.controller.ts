@@ -158,8 +158,18 @@ export const leaveCourse = async (req: Request, res: Response) => {
 }
 
 export const getVideos = async (req: Request, res: Response) => {
+  let data
+
   try {
-    const data = await VideoService.getVideosByCourseId(req.params.courseId, req.query.q as string)
+    data = await VideoService.getVideosByCourseId(req.params.courseId, (req.query.q as string) || '')
+
+    if (req.role !== 'ADMIN') {
+      data = data.map((video) => ({
+        id: video.id,
+        title: video.title,
+        video_url: video.video_url
+      }))
+    }
 
     logInfo(req, 'Fetching video by course')
     res.status(200).json({ message: 'Berhasil mendapatkan video', data })

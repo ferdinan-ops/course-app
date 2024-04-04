@@ -9,7 +9,7 @@ export default function Markdown({ values }: MarkdownProps) {
       className="
             prose
             prose-sm
-            md:prose-lg
+            md:prose-base 
             prose-headings:pt-5
             prose-headings:text-font prose-headings:font-bold
             prose-h1:text-2xl
