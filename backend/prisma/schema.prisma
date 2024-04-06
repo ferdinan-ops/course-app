@@ -34,6 +34,7 @@ model User {
   videos   Video[]
   roadmaps Roadmap[]
   members  Member[]
+  comments Comment[]
 }
 
 model Course {
@@ -84,6 +85,8 @@ model Video {
   admin_id String
   admin    User   @relation(fields: [admin_id], references: [id], onDelete: Cascade)
 
+  comments Comment[]
+
   @@index([course_id])
   @@index([admin_id])
 }
@@ -101,4 +104,20 @@ model Roadmap {
   courses Course[]
 
   @@index([admin_id])
+}
+
+model Comment {
+  id         String   @id @default(uuid())
+  content    String   @db.Text
+  created_at DateTime @default(now())
+  updated_at DateTime @updatedAt
+
+  user_id String
+  user    User   @relation(fields: [user_id], references: [id], onDelete: Cascade)
+
+  video_id String
+  video    Video  @relation(fields: [video_id], references: [id], onDelete: Cascade)
+
+  @@index([user_id])
+  @@index([video_id])
 }
