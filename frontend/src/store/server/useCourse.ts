@@ -68,14 +68,15 @@ export const usePublishCourse = () => {
   })
 }
 
-interface GetCoursesParams {
+export interface GetCoursesParams {
   search?: string
   page?: number
   type?: string
+  enabled?: boolean
 }
 
-export const useGetCourses = ({ search, page, type }: GetCoursesParams) => {
-  return useQuery(['courses', search, page, type], () => getCoursesFn(search, page, type))
+export const useGetCourses = ({ search, page, type, enabled }: GetCoursesParams) => {
+  return useQuery(['courses', search, page, type], () => getCoursesFn(search, page, type), { enabled })
 }
 
 export const useGetCourse = (id: string) => {
@@ -91,7 +92,7 @@ export const useJoinCourse = () => {
 
   return useMutation(joinCourseFn, {
     onSuccess: () => {
-      queryClient.invalidateQueries('courses')
+      queryClient.invalidateQueries(['courses', 'member'])
       toast({
         title: 'Course joined',
         description: 'You have successfully joined the course'
@@ -105,7 +106,7 @@ export const useLeaveCourse = () => {
 
   return useMutation(joinCourseFn, {
     onSuccess: () => {
-      queryClient.invalidateQueries('courses')
+      queryClient.invalidateQueries(['courses', 'member'])
       toast({
         title: 'Course left',
         description: 'You have successfully left the course'

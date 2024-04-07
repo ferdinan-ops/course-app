@@ -53,6 +53,7 @@ export default function App() {
           <Route path="/course">
             <Route index element={<Course />} />
             <Route path=":courseId" element={<DetailCourse />} />
+            <Route path=":courseId/video/:videoId" element={<DetailCourse />} />
           </Route>
           <Route path="/roadmap">
             <Route index element={<Roadmap />} />

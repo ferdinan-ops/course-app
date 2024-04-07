@@ -5,6 +5,7 @@ import { useTitle } from '@/hooks'
 import { useGetCourses } from '@/store/server/useCourse'
 import * as React from 'react'
 import { HiArrowRight, HiCheck } from 'react-icons/hi2'
+import { useNavigate } from 'react-router-dom'
 
 const privileges = [
   'Access the course forever',
@@ -15,7 +16,12 @@ const privileges = [
 
 export default function Home() {
   useTitle('Home')
+  const navigate = useNavigate()
   const { data: courses } = useGetCourses({ page: 1 })
+
+  const handleJoin = () => {
+    navigate('/sign-up')
+  }
 
   return (
     <React.Fragment>
@@ -30,7 +36,7 @@ export default function Home() {
             <p className="mt-5 text-[15px] text-font md:text-base">
               We provide the best online learning experience for you to acquire new skills and knowledge.
             </p>
-            <Button className="mt-5 gap-2.5 lg:rounded-full">
+            <Button className="mt-5 gap-2.5 lg:rounded-full" onClick={handleJoin}>
               <p className="text-[13px]">Get Started</p>
               <HiArrowRight className="text-base" />
             </Button>
@@ -57,7 +63,9 @@ export default function Home() {
                 </li>
               ))}
             </ul>
-            <Button className="mt-8 gap-2.5 text-[13px] lg:rounded-full">Join Now</Button>
+            <Button className="mt-8 gap-2.5 text-[13px] lg:rounded-full" onClick={handleJoin}>
+              Join Now
+            </Button>
           </HomeSection.Body>
           <HomeSection.Image src={PrivilegeIllustration} alt="hero" className="w-[70%] md:w-1/2 xl:w-[45%]" />
         </HomeSection.Container>
@@ -72,9 +80,9 @@ export default function Home() {
             </Heading>
           </HomeSection.Body>
           <div className="grid grid-cols-1 gap-8 md:grid-cols-2 lg:grid-cols-3">
-            {courses?.data.slice(0, 3).map((course) => <CourseCard key={course.id} course={course} />)}
+            {courses?.data.slice(0, 3).map((course) => <CourseCard key={course.id} course={course} isNotRounded />)}
           </div>
-          <Button className="mx-auto gap-2.5 lg:rounded-full" variant="secondary">
+          <Button className="mx-auto gap-2.5 lg:rounded-full" variant="secondary" onClick={() => navigate('/course')}>
             <p className="text-[13px]">See More</p>
             <HiArrowRight className="text-base" />
           </Button>

@@ -30,7 +30,7 @@ export default function Login() {
       onSuccess: (results) => {
         forms.reset(loginDefaultValues)
         if (results.user.role === 'ADMIN') {
-          return navigate('/admin/dashboard')
+          return navigate('/admin/course')
         }
         navigate('/')
       }

@@ -6,7 +6,7 @@ export default function ProtectedRoute() {
   const accessToken = useToken((state) => state.accessToken)
 
   if (!accessToken) {
-    return <Navigate to="/login" replace state={{ from: location }} />
+    return <Navigate to="/sign-in" replace state={{ from: location }} />
   }
 
   return <Outlet />

@@ -2,12 +2,14 @@ import { Loading, Markdown } from '@/components/atoms'
 import { CommentCard, CommentForm, Container, Heading } from '@/components/organisms'
 import { Button } from '@/components/ui/button'
 import { useToast } from '@/components/ui/use-toast'
+import { useTitle } from '@/hooks'
 import { cn } from '@/lib/utils'
 import { useToken } from '@/store/client'
+import { useGetComments } from '@/store/server/useComment'
 import { useGetCourse, useGetVideos, useJoinCourse } from '@/store/server/useCourse'
 import { useGetMemberLogin } from '@/store/server/useMember'
 import { useGetVideo } from '@/store/server/useVideo'
-import { HiArrowLeft, HiArrowRight, HiLockClosed, HiPlayCircle } from 'react-icons/hi2'
+import { HiArrowLeft, HiArrowRight, HiLockClosed, HiOutlineChatBubbleLeftRight, HiPlayCircle } from 'react-icons/hi2'
 import { useNavigate, useParams } from 'react-router-dom'
 
 export default function DetailCourse() {
@@ -18,11 +20,16 @@ export default function DetailCourse() {
   const token = useToken((state) => state.accessToken)
   const { data: course, isSuccess: successCourse } = useGetCourse(courseId as string)
   const { data: videos, isSuccess: successVideos } = useGetVideos(courseId as string)
+  const { data: comments, isSuccess: successComments } = useGetComments(
+    (videoId as string) || (course?.videos[0].id as string)
+  )
 
   const { data: video } = useGetVideo(videoId as string)
-  const { data: member } = useGetMemberLogin(courseId as string)
+  const { data: member } = useGetMemberLogin(courseId as string, token as string)
 
   const { mutate: joinCourse, isLoading } = useJoinCourse()
+
+  useTitle(`${course?.title} ~ ${!videoId ? course?.videos[0].title : video?.title}` || 'Course')
 
   const handleJoin = () => {
     if (!token) {
@@ -53,10 +60,12 @@ export default function DetailCourse() {
       })
     }
 
-    navigate(`/courses/${courseId}/video/${videoId}`)
+    navigate(`/course/${courseId}/video/${videoId}`)
   }
 
-  if (!successCourse || !successVideos) return <Loading />
+  if (!successCourse || !successVideos || !successComments) return <Loading />
+
+  const currentVideoIndex = videos.data.findIndex((video) => video.id === videoId)
 
   return (
     <Container className="xl:pb-56">
@@ -67,11 +76,21 @@ export default function DetailCourse() {
         </Heading>
         {member ? (
           <div className="flex items-center gap-4">
-            <Button className="gap-3" variant="outline">
+            <Button
+              className="gap-3"
+              variant="outline"
+              disabled={!videoId || videoId === course.videos[0].id}
+              onClick={() => handleNavigateVideo(videos.data[currentVideoIndex - 1].id)}
+            >
               <HiArrowLeft />
               <p>Prev</p>
             </Button>
-            <Button className="gap-3" variant="outline">
+            <Button
+              className="gap-3"
+              variant="outline"
+              disabled={videoId === videos.data[videos.data.length - 1].id}
+              onClick={() => handleNavigateVideo(!videoId ? videos.data[1].id : videos.data[currentVideoIndex + 1].id)}
+            >
               <p>Next</p>
               <HiArrowRight />
             </Button>
@@ -94,13 +113,26 @@ export default function DetailCourse() {
           </div>
           <div className="mt-8 border-t-2 border-slate-200 py-5 xl:py-4">
             <div className="flex w-full flex-col gap-5">
-              {token && <CommentForm />}
-              <h3 className="px-4 text-sm font-semibold">3 comments</h3>
-              <div className="flex flex-col gap-4 px-4">
-                {[...Array(3)].map((_, i) => (
-                  <CommentCard key={i} />
-                ))}
-              </div>
+              {token && member && <CommentForm videoId={(videoId as string) || course.videos[0].id} />}
+              <h3 className="px-4 text-sm font-semibold">{comments.length} comments</h3>
+
+              {comments.length === 0 ? (
+                <div className="mt-5 flex flex-col items-center gap-8">
+                  <HiOutlineChatBubbleLeftRight className="text-7xl text-font/20 md:text-[86px]" />
+                  <div className="gap flex flex-col items-center gap-1 text-center font-semibold md:gap-2">
+                    <p className="text-[13px] text-font md:text-sm">Your compliments and feedback are welcome!</p>
+                    <p className="text-xs text-font/50 md:text-[13px]">
+                      Share your thoughts using the comment box below.
+                    </p>
+                  </div>
+                </div>
+              ) : (
+                <div className="flex flex-col gap-4 px-4">
+                  {comments.map((comment) => (
+                    <CommentCard key={comment.id} comment={comment} />
+                  ))}
+                </div>
+              )}
             </div>
           </div>
         </div>
@@ -116,19 +148,22 @@ export default function DetailCourse() {
                   onClick={() => handleNavigateVideo(video.id)}
                   className={cn(
                     'flex cursor-pointer items-center gap-3 rounded-md border px-3 py-2 text-font/60',
-                    !videoId && index === 0 && 'bg-primary text-white/80'
+                    !videoId && index === 0 && 'bg-primary text-white/80',
+                    videoId === video.id && 'bg-primary text-white/80'
                   )}
                 >
-                  <div>
-                    {!videoId && index === 0 ? (
-                      <HiPlayCircle className="text-xl" />
-                    ) : (
-                      <HiLockClosed className="text-xl" />
-                    )}
+                  <div className="text-xl">
+                    {(!videoId && index === 0) || member ? <HiPlayCircle /> : <HiLockClosed />}
                   </div>
-                  <p className={cn('truncate-1 text-sm text-font', !videoId && index === 0 && 'text-white')}>
+                  <span
+                    className={cn(
+                      'truncate-1 text-sm text-font',
+                      !videoId && index === 0 && 'text-white',
+                      videoId === video.id && 'text-white'
+                    )}
+                  >
                     {video.title}
-                  </p>
+                  </span>
                   <p className="ml-auto text-sm">11:25</p>
                 </div>
               ))}

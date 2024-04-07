@@ -60,7 +60,7 @@ export const verifyUserRole = (req: Request, res: Response, next: NextFunction) 
 export const verifyAdmin = (req: Request, res: Response, next: NextFunction) => {
   if (req.role !== 'ADMIN') {
     logWarn(req, 'Unauthorized access')
-    return res.status(403).json({ message: 'Forbidden' })
+    return res.status(401).json({ message: 'Unauthorized' })
   }
 
   next()

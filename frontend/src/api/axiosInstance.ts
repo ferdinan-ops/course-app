@@ -32,7 +32,7 @@ api.interceptors.response.use(
   async (error) => {
     const originalConfig = error.config
 
-    if (originalConfig.url !== '/login' && error.response) {
+    if (originalConfig.url !== '/sign-in' && error.response) {
       if (error.response.status === 403) {
         originalConfig._retry = true
         const refreshToken = useToken.getState().refreshToken
@@ -45,7 +45,7 @@ api.interceptors.response.use(
         } catch (error) {
           useToken.getState().removeAccessToken()
           useToken.getState().removeRefreshToken()
-          window.location.href = '/login'
+          window.location.href = '/sign-in'
           toast({
             title: 'Sesi Anda telah berakhir',
             description: 'Silahkan login kembali untuk melanjutkan.',

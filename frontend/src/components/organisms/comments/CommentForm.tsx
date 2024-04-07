@@ -1,12 +1,36 @@
 import { Button } from '@/components/ui/button'
 import { Form, FormField } from '@/components/ui/form'
+import { useToast } from '@/components/ui/use-toast'
+import { useCreateComment } from '@/store/server/useComment'
 import { useForm } from 'react-hook-form'
 import { HiPaperAirplane } from 'react-icons/hi2'
 
-export default function CommentForm() {
-  const forms = useForm()
+type FormFields = {
+  content: string
+}
 
-  const onSubmit = () => {}
+interface CommentFormProps {
+  videoId: string
+}
+
+export default function CommentForm({ videoId }: CommentFormProps) {
+  const { toast } = useToast()
+  const forms = useForm<FormFields>()
+
+  const { mutate: createComment, isLoading } = useCreateComment()
+
+  const onSubmit = (values: FormFields) => {
+    if (values.content === '') {
+      return toast({
+        title: 'Comment is empty',
+        description: 'Please fill the comment field',
+        variant: 'destructive'
+      })
+    }
+
+    const fields = { content: values.content, video_id: videoId }
+    createComment(fields, { onSuccess: () => forms.reset() })
+  }
 
   // eslint-disable-next-line @typescript-eslint/no-explicit-any
   const handleInput = (e: any) => {
@@ -24,8 +48,9 @@ export default function CommentForm() {
           <img src="https://github.com/shadcn.png" alt="profile" className="h-full w-full object-cover" />
         </div>
         <FormField
-          name="comment"
+          name="content"
           control={forms.control}
+          rules={{ required: 'Comment is required' }}
           render={({ field }) => (
             <textarea
               spellCheck="false"
@@ -38,7 +63,7 @@ export default function CommentForm() {
             />
           )}
         />
-        <Button className="shadow-button self-end px-3 md:px-4 md:text-xs">
+        <Button className="shadow-button self-end px-3 md:px-4 md:text-xs" loading={isLoading}>
           <span className="hidden md:flex">Upload Comment</span>
           <HiPaperAirplane className="md:hidden" />
         </Button>

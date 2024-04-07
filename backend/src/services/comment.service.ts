@@ -1,4 +1,5 @@
 /* eslint-disable @typescript-eslint/return-await */
+import { userSelect } from '../utils/service'
 import { type IComment } from '../types/comment.type'
 import db from '../utils/db'
 
@@ -21,6 +22,9 @@ export const deleteCommentById = async (commentId: string) => {
 export const getCommentsByVideoId = async (videoId: string) => {
   return await db.comment.findMany({
     where: { video_id: videoId },
-    orderBy: { created_at: 'desc' }
+    orderBy: { created_at: 'desc' },
+    include: {
+      user: userSelect
+    }
   })
 }

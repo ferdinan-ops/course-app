@@ -1,15 +1,15 @@
+import { Loading } from '@/components/atoms'
 import { Container, Heading, RoadmapCard } from '@/components/organisms'
+import { useTitle } from '@/hooks'
 import { useGetRoadmaps } from '@/store/server/useRoadmap'
 
 export default function Roadmap() {
+  useTitle('Roadmap')
   const { data: roadmaps, isSuccess } = useGetRoadmaps()
-
-  if (!isSuccess) {
-    return <p>Loading...</p>
-  }
 
   return (
     <section className="bg-[#F6F8FD]">
+      {!isSuccess && <Loading />}
       <Container>
         <Heading className="text-center">
           <Heading.Title>#RoadmapToFuture</Heading.Title>
@@ -19,8 +19,13 @@ export default function Roadmap() {
           </p>
         </Heading>
         <section className="mt-20 grid grid-cols-4 gap-8">
-          {roadmaps.map((roadmap) => (
-            <RoadmapCard key={roadmap.id} title={roadmap.title} countClass={roadmap.courses.length} />
+          {roadmaps?.map((roadmap) => (
+            <RoadmapCard
+              key={roadmap.id}
+              roadmapId={roadmap.id}
+              title={roadmap.title}
+              countClass={roadmap.courses.length}
+            />
           ))}
         </section>
       </Container>

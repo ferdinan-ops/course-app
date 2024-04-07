@@ -83,3 +83,24 @@ export const changeEmail = async (req: Request, res: Response) => {
     res.status(500).json({ error })
   }
 }
+
+export const myCourses = async (req: Request, res: Response) => {
+  const { page, limit, q } = req.query
+  const currentPage = Number(page) || 1
+  const perPage = Number(limit) || 10
+
+  try {
+    const { data, count } = await UserService.getMyCourses(currentPage, perPage, q as string, req.userId as string)
+
+    logInfo(req, 'Getting user courses')
+    res.status(200).json({
+      message: 'Berhasil mendapatkan semua course user',
+      data: {
+        data,
+        meta: { current_page: currentPage, limit: perPage, total: count }
+      }
+    })
+  } catch (error) {
+    res.status(500).json({ error })
+  }
+}

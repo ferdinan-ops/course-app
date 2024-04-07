@@ -1,3 +1,4 @@
+import { CourseResponseType } from '@/lib/types/course.type'
 import api from './axiosInstance'
 import { UserType } from '@/lib/types/user.type'
 import { ChangePasswordType, ChangeProfilePicType, EditUserType } from '@/lib/validations/user.validation'
@@ -30,4 +31,15 @@ export const uploadProfilePicFn = async (data: ChangeProfilePicType): Promise<Us
   })
 
   return response.data?.data
+}
+
+export const getMyCourses = async (search?: string, page?: number): Promise<CourseResponseType> => {
+  const response = await api.get('/user/course', {
+    params: {
+      q: search,
+      page
+    }
+  })
+  console.log(response.data)
+  return response.data
 }

@@ -56,3 +56,30 @@ export const getUserByEmail = async (email: string) => {
 export const updateEmail = async (userId: string, email: string, token: string) => {
   return await db.user.update({ where: { id: userId }, data: { email, is_email_verified: false, token } })
 }
+
+export const getMyCourses = async (page: number, limit: number, search: string, userId: string) => {
+  const [data, count] = await db.$transaction([
+    db.course.findMany({
+      where: {
+        members: { some: { user_id: userId } },
+        OR: [{ title: { contains: search } }, { description: { contains: search } }]
+      },
+      skip: (page - 1) * limit,
+      take: limit,
+      include: {
+        _count: {
+          select: { videos: true, members: true }
+        }
+      },
+      orderBy: { created_at: 'desc' }
+    }),
+    db.course.count({
+      where: {
+        members: { some: { user_id: userId } },
+        OR: [{ title: { contains: search } }, { description: { contains: search } }]
+      }
+    })
+  ])
+
+  return { data, count }
+}

@@ -1,9 +1,10 @@
-import { useMutation, useQueryClient } from 'react-query'
+import { useMutation, useQuery, useQueryClient } from 'react-query'
 
 import { useUserInfo } from '../client'
-import { changePasswordFn, updateEmailFn, updateMeFn, uploadProfilePicFn } from '@/api/user.api'
+import { changePasswordFn, getMyCourses, updateEmailFn, updateMeFn, uploadProfilePicFn } from '@/api/user.api'
 
 import { toast } from '@/components/ui/use-toast'
+import { GetCoursesParams } from './useCourse'
 
 export const useUpdateMe = () => {
   const queryClient = useQueryClient()
@@ -55,4 +56,8 @@ export const useUpdateProfilePic = () => {
       })
     }
   })
+}
+
+export const useGetMyCourses = ({ search, page, enabled }: GetCoursesParams & { enabled: boolean }) => {
+  return useQuery(['my-courses', search, page], () => getMyCourses(search, page), { enabled })
 }

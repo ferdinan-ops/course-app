@@ -11,7 +11,7 @@ export default function ProtectedAuth() {
   }
 
   if (user?.role === 'ADMIN' && accessToken) {
-    return <Navigate to="/admin/dashboard" replace state={{ from: location }} />
+    return <Navigate to="/admin/course" replace state={{ from: location }} />
   }
 
   return <Outlet />
