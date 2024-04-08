@@ -10,6 +10,7 @@ import Brand from './Brand'
 import AdminAction from './AdminAction'
 import BackButton from './BackButton'
 import Loading from './Loading'
+import NoData from './NoData'
 
 import Pagination from './navigations/Pagination'
 import ActiveLink from './navigations/ActiveLink'
@@ -32,5 +33,6 @@ export {
   BackButton,
   TableSearch,
   Loading,
-  Markdown
+  Markdown,
+  NoData
 }

@@ -57,7 +57,14 @@ export const updateEmail = async (userId: string, email: string, token: string) 
   return await db.user.update({ where: { id: userId }, data: { email, is_email_verified: false, token } })
 }
 
-export const getMyCourses = async (page: number, limit: number, search: string, userId: string) => {
+interface getMyCoursesParams {
+  page: number
+  limit: number
+  search: string
+  userId: string
+}
+
+export const getMyCourses = async ({ page, limit, search, userId }: getMyCoursesParams) => {
   const [data, count] = await db.$transaction([
     db.course.findMany({
       where: {

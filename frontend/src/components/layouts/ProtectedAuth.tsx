@@ -6,7 +6,7 @@ export default function ProtectedAuth() {
   const accessToken = useToken((state) => state.accessToken)
   const user = useUserInfo((state) => state.user)
 
-  if (user?.role === 'GUEST' && !accessToken) {
+  if (user?.role === 'GUEST' && accessToken) {
     return <Navigate to="/" replace state={{ from: location }} />
   }
 

@@ -1,8 +1,8 @@
-import { Loading, Markdown } from '@/components/atoms'
+import { Loading, Markdown, NoData } from '@/components/atoms'
 import { CommentCard, CommentForm, Container, Heading } from '@/components/organisms'
 import { Button } from '@/components/ui/button'
 import { useToast } from '@/components/ui/use-toast'
-import { useTitle } from '@/hooks'
+import { useDisableBodyScroll, useTitle } from '@/hooks'
 import { cn } from '@/lib/utils'
 import { useToken } from '@/store/client'
 import { useGetComments } from '@/store/server/useComment'
@@ -30,6 +30,7 @@ export default function DetailCourse() {
   const { mutate: joinCourse, isLoading } = useJoinCourse()
 
   useTitle(`${course?.title} ~ ${!videoId ? course?.videos[0].title : video?.title}` || 'Course')
+  useDisableBodyScroll(!successCourse || !successVideos || !successComments)
 
   const handleJoin = () => {
     if (!token) {
@@ -63,24 +64,23 @@ export default function DetailCourse() {
     navigate(`/course/${courseId}/video/${videoId}`)
   }
 
-  if (!successCourse || !successVideos || !successComments) return <Loading />
-
-  const currentVideoIndex = videos.data.findIndex((video) => video.id === videoId)
+  const currentVideoIndex = videos?.data.findIndex((video) => video.id === videoId) as number
 
   return (
     <Container className="xl:pb-56">
+      {(!successCourse || !successVideos || !successComments) && <Loading />}
       <section className="flex items-center justify-between">
         <Heading>
-          <Heading.SubTitle className="mb-2">{course.title}</Heading.SubTitle>
-          <Heading.Title>{course.videos[0].title}</Heading.Title>
+          <Heading.SubTitle className="mb-2">{course?.title}</Heading.SubTitle>
+          <Heading.Title>{course?.videos[0].title}</Heading.Title>
         </Heading>
         {member ? (
           <div className="flex items-center gap-4">
             <Button
               className="gap-3"
               variant="outline"
-              disabled={!videoId || videoId === course.videos[0].id}
-              onClick={() => handleNavigateVideo(videos.data[currentVideoIndex - 1].id)}
+              disabled={!videoId || videoId === course?.videos[0].id}
+              onClick={() => handleNavigateVideo(videos?.data[currentVideoIndex - 1].id as string)}
             >
               <HiArrowLeft />
               <p>Prev</p>
@@ -88,8 +88,10 @@ export default function DetailCourse() {
             <Button
               className="gap-3"
               variant="outline"
-              disabled={videoId === videos.data[videos.data.length - 1].id}
-              onClick={() => handleNavigateVideo(!videoId ? videos.data[1].id : videos.data[currentVideoIndex + 1].id)}
+              disabled={videoId === videos?.data[videos?.data.length - 1].id}
+              onClick={() =>
+                handleNavigateVideo((!videoId ? videos?.data[1].id : videos?.data[currentVideoIndex + 1].id) as string)
+              }
             >
               <p>Next</p>
               <HiArrowRight />
@@ -109,28 +111,22 @@ export default function DetailCourse() {
           </div>
           <div className="mt-8">
             <h1 className="mb-2.5 text-2xl font-semibold text-font">About Video</h1>
-            <Markdown values={videoId ? (video?.description as string) : course.videos[0].description} />
+            <Markdown values={(videoId ? (video?.description as string) : course?.videos[0].description) as string} />
           </div>
           <div className="mt-8 border-t-2 border-slate-200 py-5 xl:py-4">
             <div className="flex w-full flex-col gap-5">
-              {token && member && <CommentForm videoId={(videoId as string) || course.videos[0].id} />}
-              <h3 className="px-4 text-sm font-semibold">{comments.length} comments</h3>
+              {token && member && <CommentForm videoId={((videoId as string) || course?.videos[0].id) as string} />}
+              <h3 className="px-4 text-sm font-semibold">{comments?.length} comments</h3>
 
-              {comments.length === 0 ? (
-                <div className="mt-5 flex flex-col items-center gap-8">
-                  <HiOutlineChatBubbleLeftRight className="text-7xl text-font/20 md:text-[86px]" />
-                  <div className="gap flex flex-col items-center gap-1 text-center font-semibold md:gap-2">
-                    <p className="text-[13px] text-font md:text-sm">Your compliments and feedback are welcome!</p>
-                    <p className="text-xs text-font/50 md:text-[13px]">
-                      Share your thoughts using the comment box below.
-                    </p>
-                  </div>
-                </div>
+              {comments?.length === 0 ? (
+                <NoData
+                  icon={HiOutlineChatBubbleLeftRight}
+                  title="Your compliments and feedback are welcome!"
+                  text="Share your thoughts using the comment box below."
+                />
               ) : (
                 <div className="flex flex-col gap-4 px-4">
-                  {comments.map((comment) => (
-                    <CommentCard key={comment.id} comment={comment} />
-                  ))}
+                  {comments?.map((comment) => <CommentCard key={comment.id} comment={comment} />)}
                 </div>
               )}
             </div>
@@ -139,10 +135,10 @@ export default function DetailCourse() {
         <div className="col-span-2">
           <div className="col-span-2 max-h-[400px] rounded-lg border">
             <div className="border-b p-4">
-              <h3 className="text-[15px] font-semibold text-font">{course._count.videos} Lessons [1.5 Hours]</h3>
+              <h3 className="text-[15px] font-semibold text-font">{course?._count.videos} Lessons [1.5 Hours]</h3>
             </div>
             <div className="scroll-custom flex max-h-[calc(400px-56px)] flex-col gap-2.5 overflow-y-auto p-4">
-              {videos.data.map((video, index) => (
+              {videos?.data.map((video, index) => (
                 <div
                   key={video.id}
                   onClick={() => handleNavigateVideo(video.id)}

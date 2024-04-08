@@ -85,7 +85,7 @@ export const getCourses = async (req: Request, res: Response) => {
       })
     }
 
-    const { data, count } = await CourseService.getCoursesByPublished(currentPage, perPage)
+    const { data, count } = await CourseService.getCoursesByPublished(currentPage, perPage, (q as string) || '')
     logInfo(req, 'Fetching published courses')
     res.status(200).json({
       message: 'Berhasil mendapatkan semua course yang dipublish',

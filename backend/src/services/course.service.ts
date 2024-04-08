@@ -125,11 +125,12 @@ export const removeMemberFromCourse = async (courseId: string, userId: string) =
   })
 }
 
-export const getCoursesByPublished = async (page: number, limit: number) => {
+export const getCoursesByPublished = async (page: number, limit: number, search: string) => {
   const [data, count] = await db.$transaction([
     db.course.findMany({
       where: {
-        is_published: true
+        is_published: true,
+        OR: [{ title: { contains: search } }, { description: { contains: search } }]
       },
       skip: (page - 1) * limit,
       take: limit,
@@ -142,7 +143,8 @@ export const getCoursesByPublished = async (page: number, limit: number) => {
     }),
     db.course.count({
       where: {
-        is_published: true
+        is_published: true,
+        OR: [{ title: { contains: search } }, { description: { contains: search } }]
       }
     })
   ])

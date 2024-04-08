@@ -1,14 +1,15 @@
 import { Loading } from '@/components/atoms'
 import { Container, Heading, RoadmapCard } from '@/components/organisms'
-import { useTitle } from '@/hooks'
+import { useDisableBodyScroll, useTitle } from '@/hooks'
 import { useGetRoadmaps } from '@/store/server/useRoadmap'
 
 export default function Roadmap() {
   useTitle('Roadmap')
   const { data: roadmaps, isSuccess } = useGetRoadmaps()
+  useDisableBodyScroll(!isSuccess)
 
   return (
-    <section className="bg-[#F6F8FD]">
+    <section className="min-h-[calc(100vh-80px)] bg-[#F6F8FD]">
       {!isSuccess && <Loading />}
       <Container>
         <Heading className="text-center">

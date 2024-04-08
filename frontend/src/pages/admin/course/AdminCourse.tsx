@@ -3,7 +3,7 @@ import { Heading } from '@/components/organisms'
 import { Button } from '@/components/ui/button'
 import { Form, FormField, FormItem } from '@/components/ui/form'
 import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from '@/components/ui/table'
-import { useQueryParams, useTitle } from '@/hooks'
+import { useDisableBodyScroll, useQueryParams, useTitle } from '@/hooks'
 import { cn, formatDate } from '@/lib/utils'
 import { useDialog } from '@/store/client'
 import { useDeleteCourse, useGetCourses, usePublishCourse } from '@/store/server/useCourse'
@@ -34,6 +34,8 @@ export default function AdminCourse() {
     search: params.search || '',
     page: Number(params.page) || 1
   })
+
+  useDisableBodyScroll(isFetching)
 
   const onSubmit = (data: FormFields) => {
     if (data.search === '') {

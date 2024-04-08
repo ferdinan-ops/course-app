@@ -3,7 +3,7 @@ import { Heading } from '@/components/organisms'
 import { Button } from '@/components/ui/button'
 import { Form, FormField, FormItem } from '@/components/ui/form'
 import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from '@/components/ui/table'
-import { useQueryParams } from '@/hooks'
+import { useDisableBodyScroll, useQueryParams } from '@/hooks'
 import { formatDate } from '@/lib/utils'
 import { useGetCourse, useGetVideos } from '@/store/server/useCourse'
 import * as React from 'react'
@@ -23,6 +23,8 @@ export default function VideoCourse() {
   const { params, createParam, deleteParam } = useQueryParams(['search'])
   const { data: course, isLoading } = useGetCourse(courseId as string)
   const { data: videos, isFetching, refetch } = useGetVideos(courseId as string, params.search || '')
+
+  useDisableBodyScroll(isFetching || isLoading)
 
   const onSubmit = (data: FormFields) => {
     if (data.search === '') {

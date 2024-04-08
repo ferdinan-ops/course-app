@@ -1,5 +1,6 @@
 import { BackButton, Loading } from '@/components/atoms'
 import { Container, CourseCard, Heading } from '@/components/organisms'
+import { useDisableBodyScroll } from '@/hooks'
 import { useGetRoadmap } from '@/store/server/useRoadmap'
 import * as React from 'react'
 import { HiArrowDown } from 'react-icons/hi2'
@@ -8,6 +9,8 @@ import { useParams } from 'react-router-dom'
 export default function DetailRoadmap() {
   const { roadmapId } = useParams<{ roadmapId: string }>()
   const { data: roadmap, isSuccess } = useGetRoadmap(roadmapId as string)
+
+  useDisableBodyScroll(!isSuccess)
 
   return (
     <section className="relative bg-[#F6F8FD] lg:pb-20">
@@ -24,7 +27,7 @@ export default function DetailRoadmap() {
           {roadmap?.courses.map((course, i) => (
             <React.Fragment key={course.id}>
               <CourseCard course={course} containerClassName="max-w-[650px]" type="row" />
-              {i < 5 && i > 1 && <HiArrowDown className="text-5xl" />}
+              {i !== roadmap.courses.length - 1 && <HiArrowDown className="text-5xl" />}
             </React.Fragment>
           ))}
         </div>

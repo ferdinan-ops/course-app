@@ -2,6 +2,7 @@ import { HeroImage, PrivilegeIllustration } from '@/assets'
 import { CourseCard, HomeSection, Heading } from '@/components/organisms'
 import { Button } from '@/components/ui/button'
 import { useTitle } from '@/hooks'
+import { useToken } from '@/store/client'
 import { useGetCourses } from '@/store/server/useCourse'
 import * as React from 'react'
 import { HiArrowRight, HiCheck } from 'react-icons/hi2'
@@ -17,9 +18,12 @@ const privileges = [
 export default function Home() {
   useTitle('Home')
   const navigate = useNavigate()
+
+  const accessToken = useToken((state) => state.accessToken)
   const { data: courses } = useGetCourses({ page: 1 })
 
   const handleJoin = () => {
+    if (accessToken) return navigate('/course')
     navigate('/sign-up')
   }
 
