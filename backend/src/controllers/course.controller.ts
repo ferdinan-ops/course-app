@@ -167,7 +167,8 @@ export const getVideos = async (req: Request, res: Response) => {
       data = data.map((video) => ({
         id: video.id,
         title: video.title,
-        video_url: video.video_url
+        video_url: video.video_url,
+        youtube_info: video.youtube_info
       }))
     }
 

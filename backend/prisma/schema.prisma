@@ -50,10 +50,9 @@ model Course {
   admin_id String
   admin    User   @relation(fields: [admin_id], references: [id], onDelete: Cascade)
 
-  videos    Video[]
-  members   Member[]
-  roadmap   Roadmap? @relation(fields: [roadmapId], references: [id], onDelete: SetNull)
-  roadmapId String?
+  videos  Video[]
+  members Member[]
+  roadmap Roadmap[] @relation("CourseToRoadmap")
 
   @@index([admin_id])
 }
@@ -71,10 +70,11 @@ model Member {
 }
 
 model Video {
-  id          String @id @default(uuid())
-  title       String
-  video_url   String
-  description String @db.Text
+  id           String @id @default(uuid())
+  title        String
+  video_url    String
+  description  String @db.Text
+  youtube_info Json   @default("{}")
 
   created_at DateTime @default(now())
   updated_at DateTime @updatedAt
@@ -101,7 +101,7 @@ model Roadmap {
   admin_id String
   admin    User   @relation(fields: [admin_id], references: [id], onDelete: Cascade)
 
-  courses Course[]
+  courses Course[] @relation("CourseToRoadmap")
 
   @@index([admin_id])
 }

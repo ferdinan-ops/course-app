@@ -44,8 +44,8 @@ export const useDeleteComment = () => {
   })
 }
 
-export const useGetComments = (videoId: string) => {
-  return useQuery(['comments', videoId], async () => await getCommentsFn(videoId), { enabled: !!videoId })
+export const useGetComments = (videoId?: string) => {
+  return useQuery(['comments', videoId], async () => await getCommentsFn(videoId as string), { enabled: !!videoId })
 }
 
 export const useGetComment = (id: string) => {

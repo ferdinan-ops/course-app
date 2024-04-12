@@ -7,7 +7,6 @@ import { Toaster } from './components/ui/toaster'
 
 import {
   AdminCourse,
-  AdminDashboard,
   AdminProfile,
   AdminRoadmap,
   CreateCourse,
@@ -72,7 +71,6 @@ export default function App() {
         <Route element={<ProtectedFromGuest />}>
           <Route element={<AdminLayout />}>
             <Route path="/admin">
-              <Route path="dashboard" element={<AdminDashboard />} />
               <Route path="profile" element={<AdminProfile />} />
               <Route path="course">
                 <Route index element={<AdminCourse />} />

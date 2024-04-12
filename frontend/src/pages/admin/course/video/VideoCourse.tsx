@@ -1,21 +1,25 @@
-import { AdminAction, BackButton, Loading, TableSearch } from '@/components/atoms'
+import * as React from 'react'
+import { HiPlus } from 'react-icons/hi2'
+import { useForm } from 'react-hook-form'
+import { Link, useNavigate, useParams } from 'react-router-dom'
+
 import { Heading } from '@/components/organisms'
+import { AdminAction, BackButton, Loading, TableSearch } from '@/components/atoms'
+
 import { Button } from '@/components/ui/button'
 import { Form, FormField, FormItem } from '@/components/ui/form'
 import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from '@/components/ui/table'
-import { useDisableBodyScroll, useQueryParams } from '@/hooks'
+
 import { formatDate } from '@/lib/utils'
+import { useDisableBodyScroll, useQueryParams, useTitle } from '@/hooks'
 import { useGetCourse, useGetVideos } from '@/store/server/useCourse'
-import * as React from 'react'
-import { useForm } from 'react-hook-form'
-import { HiPlus } from 'react-icons/hi2'
-import { Link, useNavigate, useParams } from 'react-router-dom'
 
 interface FormFields {
   search: string
 }
 
 export default function VideoCourse() {
+  useTitle('Admin ~ Video Course')
   const navigate = useNavigate()
   const { courseId } = useParams<{ courseId: string }>()
   const forms = useForm<FormFields>()
@@ -76,7 +80,6 @@ export default function VideoCourse() {
             <TableHead className="text-white">Channel</TableHead>
             <TableHead className="text-white">Youtube Link</TableHead>
             <TableHead className="text-white">Created At</TableHead>
-            <TableHead className="text-white">Updated At</TableHead>
             <TableHead className="text-white">Actions</TableHead>
           </TableRow>
         </TableHeader>
@@ -84,17 +87,29 @@ export default function VideoCourse() {
           {videos?.data?.map((video) => (
             <TableRow key={video.id} className="text-[13px]">
               <TableCell>
-                {/* <Image src={video.thumbnail} alt={video.title} className="w-36 rounded-md object-cover md:h-20" /> */}
+                <img
+                  src={video.youtube_info.thumbnails.default.url}
+                  alt={video.youtube_info.title}
+                  className="w-36 rounded-md object-cover md:h-20"
+                />
               </TableCell>
               <TableCell className="font-semibold">{video.title}</TableCell>
-              <TableCell></TableCell>
+              <TableCell position="center">
+                <div className="flex flex-col items-center gap-3">
+                  <img
+                    src={video.youtube_info.channel.thumbnails.default.url}
+                    alt={video.youtube_info.channel.title}
+                    className="rounded-full object-cover md:h-10 md:w-10"
+                  />
+                  <p className="truncate-1 text-xs font-medium">{video.youtube_info.channel.title}</p>
+                </div>
+              </TableCell>
               <TableCell className="truncate-1 w-fit">
                 <Link to={video.video_url} target="_blank" className="font-medium text-primary underline">
                   {video.video_url}
                 </Link>
               </TableCell>
               <TableCell>{formatDate(video.created_at)}</TableCell>
-              <TableCell>{formatDate(video.updated_at)}</TableCell>
               <TableCell position="center">
                 <AdminAction>
                   <AdminAction.Item

@@ -17,7 +17,7 @@ import { CreateVideoType, createVideoValidation } from '@/lib/validations/video.
 export default function CreateVideo() {
   const { courseId, videoId } = useParams<{ courseId: string; videoId: string }>()
 
-  useTitle(`${videoId ? 'Update' : 'Create'} Video`)
+  useTitle(`Admin ~ ${videoId ? 'Update' : 'Create'} Video`)
   const navigate = useNavigate()
 
   const { data: video, isSuccess } = useGetVideo(videoId as string)

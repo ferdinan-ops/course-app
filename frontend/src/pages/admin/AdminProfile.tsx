@@ -1,20 +1,25 @@
-import { Alert, EditEmail, Heading, UploadPhoto } from '@/components/organisms'
-import { Button } from '@/components/ui/button'
-import { Form, FormControl, FormField, FormItem, FormLabel, FormMessage } from '@/components/ui/form'
+import * as React from 'react'
+import { useForm } from 'react-hook-form'
+import { useNavigate } from 'react-router-dom'
+import { yupResolver } from '@hookform/resolvers/yup'
+import { HiOutlineArrowLeftOnRectangle, HiOutlineCog6Tooth, HiOutlineLockClosed, HiOutlineUser } from 'react-icons/hi2'
+
 import { Input } from '@/components/ui/input'
-import { editProfileDefaultValues } from '@/lib/defaultValues'
+import { Button } from '@/components/ui/button'
+import { Alert, EditEmail, Heading, UploadPhoto } from '@/components/organisms'
+import { Form, FormControl, FormField, FormItem, FormLabel, FormMessage } from '@/components/ui/form'
+
 import { UserType } from '@/lib/types/user.type'
+import { editProfileDefaultValues } from '@/lib/defaultValues'
 import { EditUserType, editUserValidation } from '@/lib/validations/user.validation'
+
+import { useTitle } from '@/hooks'
 import { useUserInfo } from '@/store/client'
 import { useLogout } from '@/store/server/useAuth'
 import { useUpdateMe } from '@/store/server/useUser'
-import { yupResolver } from '@hookform/resolvers/yup'
-import * as React from 'react'
-import { useForm } from 'react-hook-form'
-import { HiOutlineArrowLeftOnRectangle, HiOutlineCog6Tooth, HiOutlineLockClosed, HiOutlineUser } from 'react-icons/hi2'
-import { useNavigate } from 'react-router-dom'
 
 export default function AdminProfile() {
+  useTitle('Admin ~ Profile')
   const navigate = useNavigate()
   const user = useUserInfo((state) => state.user)
 

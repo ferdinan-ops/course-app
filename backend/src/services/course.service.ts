@@ -4,7 +4,6 @@ import { compressedFile } from '../utils/fileSettings'
 import { processPhoto } from './user.service'
 
 export const addNewCourse = async (fields: ICourse, userId: string) => {
-  console.log({ fields, userId })
   const compressedImage = await compressedFile(fields.thumbnail)
   return await db.course.create({
     data: {

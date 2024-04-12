@@ -57,6 +57,7 @@ export default function Pagination(props: PaginationProps) {
         }
         return (
           <Button
+            key={index}
             variant="outline"
             onClick={() => onPageChange(Number(pageNumber))}
             className={cn(pageNumber === currentPage && 'border-primary bg-zinc-100 text-primary', btnClass)}

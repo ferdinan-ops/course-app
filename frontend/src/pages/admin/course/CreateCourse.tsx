@@ -19,7 +19,7 @@ import { CreateCourseType, createCourseValidation } from '@/lib/validations/cour
 export default function CreateCourse() {
   const { courseId } = useParams<{ courseId: string }>()
 
-  useTitle(`${courseId ? 'Update' : 'Create'} Course`)
+  useTitle(`Admin ~ ${courseId ? 'Update' : 'Create'} Course`)
   const navigate = useNavigate()
 
   const { data: course, isSuccess } = useGetCourse(courseId as string)

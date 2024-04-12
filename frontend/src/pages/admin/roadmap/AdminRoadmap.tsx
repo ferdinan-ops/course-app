@@ -1,20 +1,34 @@
-import { Heading, RoadmapCard } from '@/components/organisms'
-import { Button } from '@/components/ui/button'
-import { useGetRoadmaps } from '@/store/server/useRoadmap'
 import * as React from 'react'
-import { HiOutlinePencilSquare, HiOutlinePresentationChartLine, HiOutlineTrash, HiPlus } from 'react-icons/hi2'
 import { useNavigate } from 'react-router-dom'
+import { HiOutlinePencilSquare, HiOutlinePresentationChartLine, HiOutlineTrash, HiPlus } from 'react-icons/hi2'
+
+import { Loading } from '@/components/atoms'
+import { Button } from '@/components/ui/button'
+import { Heading, RoadmapCard } from '@/components/organisms'
+
+import { useTitle } from '@/hooks'
+import { useDialog } from '@/store/client'
+import { useDeleteRoadmap, useGetRoadmaps } from '@/store/server/useRoadmap'
 
 export default function AdminRoadmap() {
+  useTitle('Admin ~ Roadmaps')
+  const { dialog } = useDialog()
   const navigate = useNavigate()
   const { data: roadmaps, isSuccess } = useGetRoadmaps()
+  const { mutate: deleteRoadmap } = useDeleteRoadmap()
 
-  if (!isSuccess) {
-    return <p>Loading...</p>
+  const handleDelete = (id: string) => {
+    dialog({
+      title: 'Delete Roadmap',
+      description: 'Are you sure you want to delete this roadmap?',
+      submitText: 'Delete',
+      variant: 'danger'
+    }).then(() => deleteRoadmap(id))
   }
 
   return (
     <React.Fragment>
+      {!isSuccess && <Loading />}
       <div className="flex items-center justify-between">
         <Heading className="flex items-center gap-5 text-font">
           <Heading.Icon icon={HiOutlinePresentationChartLine} />
@@ -29,7 +43,7 @@ export default function AdminRoadmap() {
         </Button>
       </div>
       <section className="mt-16 grid grid-cols-4 gap-8">
-        {roadmaps.map((roadmap, i) => (
+        {roadmaps?.map((roadmap, i) => (
           <RoadmapCard
             key={i}
             title={roadmap.title}
@@ -46,7 +60,7 @@ export default function AdminRoadmap() {
                 <HiOutlinePencilSquare className="text-sm" />
                 Edit
               </Button>
-              <Button variant="destructive" className="flex-1 gap-2.5 text-xs">
+              <Button variant="destructive" className="flex-1 gap-2.5 text-xs" onClick={() => handleDelete(roadmap.id)}>
                 <HiOutlineTrash className="text-sm" />
                 Delete
               </Button>

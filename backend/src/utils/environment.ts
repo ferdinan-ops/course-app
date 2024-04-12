@@ -7,7 +7,8 @@ const ENV = {
   refreshTokenSecret: process.env.REFRESH_TOKEN_SECRET,
   emailUsername: process.env.EMAIL_USERNAME,
   emailPassword: process.env.EMAIL_PASSWORD,
-  publicUrl: process.env.PUBLIC_URL
+  publicUrl: process.env.PUBLIC_URL,
+  apiKeyYouTube: process.env.YOUTUBE_API_KEY
 }
 
 export default ENV

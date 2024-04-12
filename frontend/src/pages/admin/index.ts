@@ -1,4 +1,3 @@
-import AdminDashboard from './AdminDashboard'
 import AdminProfile from './AdminProfile'
 
 import AdminCourse from './course/AdminCourse'
@@ -10,13 +9,4 @@ import CreateVideo from './course/video/CreateVideo'
 import AdminRoadmap from './roadmap/AdminRoadmap'
 import CreateRoadmap from './roadmap/CreateRoadmap'
 
-export {
-  AdminDashboard,
-  AdminProfile,
-  AdminCourse,
-  CreateCourse,
-  VideoCourse,
-  CreateVideo,
-  AdminRoadmap,
-  CreateRoadmap
-}
+export { AdminProfile, AdminCourse, CreateCourse, VideoCourse, CreateVideo, AdminRoadmap, CreateRoadmap }

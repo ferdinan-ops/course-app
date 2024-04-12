@@ -16,12 +16,12 @@ export default function MainFooter() {
         <div className="hidden items-center gap-3 md:flex">
           <div className="flex items-center gap-2 text-xs font-medium text-white">
             <HiPhone />
-            <p>081234567890</p>
+            <p>+62 812-7847-3458</p>
           </div>
           <p className="text-white">|</p>
           <div className="flex items-center gap-2 text-xs font-medium text-white">
             <HiEnvelope />
-            <p>username@email.com</p>
+            <p>youcourse07@email.com</p>
           </div>
         </div>
       </HomeSection.Container>

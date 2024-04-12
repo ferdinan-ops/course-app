@@ -3,46 +3,33 @@ import db from '../utils/db'
 import { type IRoadmap } from '../types/roadmap.type'
 
 export const addNewRoadmap = async (fields: IRoadmap, userId: string) => {
-  const roadmap = await db.roadmap.create({
+  return await db.roadmap.create({
     data: {
-      admin_id: userId,
-      title: fields.title
+      title: fields.title,
+      courses: {
+        connect: fields.courses.map((courseId) => ({ id: courseId }))
+      },
+      admin_id: userId
     }
   })
-
-  fields.courses.forEach(async (courseId) => {
-    await db.course.update({
-      where: { id: courseId },
-      data: {
-        roadmapId: roadmap.id
-      }
-    })
-  })
-
-  return roadmap
 }
 
 export const updateRoadmapById = async (roadmapId: string, fields: IRoadmap) => {
-  const roadmap = await db.roadmap.update({
+  const roadmap = await db.roadmap.findUnique({
     where: { id: roadmapId },
-    data: { title: fields.title }
+    select: { courses: { select: { id: true } } }
   })
 
-  await db.course.updateMany({
-    where: { roadmapId },
-    data: { roadmapId: null }
-  })
-
-  fields.courses.forEach(async (courseId) => {
-    await db.course.update({
-      where: { id: courseId },
-      data: {
-        roadmapId: roadmap.id
+  return await db.roadmap.update({
+    where: { id: roadmapId },
+    data: {
+      title: fields.title,
+      courses: {
+        disconnect: roadmap?.courses.map((course) => ({ id: course.id })),
+        connect: fields.courses.map((courseId) => ({ id: courseId }))
       }
-    })
+    }
   })
-
-  return roadmap
 }
 
 export const deleteRoadmapById = async (roadmapId: string) => {

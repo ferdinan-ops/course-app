@@ -50,3 +50,29 @@ export const formatDate = (date: string, type: 'with-hour' | 'without-hour' = 'w
 
   return type === 'with-hour' ? withHour : withoutHour
 }
+
+export const extractYouTubeUrl = (url: string) => {
+  const videoIdMatch = url.match(
+    // eslint-disable-next-line no-useless-escape
+    /(?:https?:\/\/)?(?:www\.)?(?:youtube\.com\/(?:[^\/\n\s]+\/\S+\/|(?:v|e(?:mbed)?)\/|\S*?[?&]v=)|youtu\.be\/)([a-zA-Z0-9_-]{11})/
+  )
+  return videoIdMatch ? videoIdMatch[1] : null
+}
+
+export const convertDurationToSeconds = (duration: string) => {
+  const matches = duration.match(/PT(\d+H)?(\d+M)?(\d+S)?/)
+
+  const hours = parseInt(matches?.[1] ?? '') || 0
+  const minutes = parseInt(matches?.[2] ?? '') || 0
+  const seconds = parseInt(matches?.[3] ?? '') || 0
+
+  return hours * 3600 + minutes * 60 + seconds
+}
+
+export const formatDuration = (duration: string) => {
+  const durationInSeconds = convertDurationToSeconds(duration)
+
+  const minutes = Math.floor(durationInSeconds / 60)
+  const seconds = durationInSeconds % 60
+  return `${minutes}:${seconds < 10 ? '0' : ''}${seconds}`
+}

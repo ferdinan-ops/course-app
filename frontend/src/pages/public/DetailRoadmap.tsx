@@ -1,14 +1,18 @@
-import { BackButton, Loading } from '@/components/atoms'
-import { Container, CourseCard, Heading } from '@/components/organisms'
-import { useDisableBodyScroll } from '@/hooks'
-import { useGetRoadmap } from '@/store/server/useRoadmap'
 import * as React from 'react'
 import { HiArrowDown } from 'react-icons/hi2'
 import { useParams } from 'react-router-dom'
 
+import { BackButton, Loading } from '@/components/atoms'
+import { Container, CourseCard, Heading } from '@/components/organisms'
+
+import { useDisableBodyScroll, useTitle } from '@/hooks'
+import { useGetRoadmap } from '@/store/server/useRoadmap'
+
 export default function DetailRoadmap() {
   const { roadmapId } = useParams<{ roadmapId: string }>()
   const { data: roadmap, isSuccess } = useGetRoadmap(roadmapId as string)
+
+  useTitle(roadmap?.title || 'Roadmap')
 
   useDisableBodyScroll(!isSuccess)
 

@@ -1,13 +1,16 @@
-import { BackButton, Loading, MultipleSelector } from '@/components/atoms'
+import { yupResolver } from '@hookform/resolvers/yup'
+
 import { Heading } from '@/components/organisms'
+import { BackButton, Loading, MultipleSelector } from '@/components/atoms'
+
+import { Input } from '@/components/ui/input'
 import { Button } from '@/components/ui/button'
 import { Form, FormControl, FormField, FormItem, FormLabel, FormMessage } from '@/components/ui/form'
-import { Input } from '@/components/ui/input'
+
 import { useTitle } from '@/hooks'
-import { CreateRoadmapType, createRoadmapValidation } from '@/lib/validations/roadmap.validation'
 import { useGetCourses } from '@/store/server/useCourse'
 import { useCreateRoadmap, useGetRoadmap, useUpdateRoadmap } from '@/store/server/useRoadmap'
-import { yupResolver } from '@hookform/resolvers/yup'
+import { CreateRoadmapType, createRoadmapValidation } from '@/lib/validations/roadmap.validation'
 
 import * as React from 'react'
 import { useForm } from 'react-hook-form'
@@ -17,7 +20,7 @@ export default function CreateRoadmap() {
   const { roadmapId } = useParams<{ roadmapId: string }>()
 
   const navigate = useNavigate()
-  useTitle(`${roadmapId ? 'Update' : 'Create'} Roadmap`)
+  useTitle(`Admin ~ ${roadmapId ? 'Update' : 'Create'} Roadmap`)
 
   const { data: courses, isSuccess: successCourse } = useGetCourses({ type: 'public' })
   const { data: roadmap, isSuccess: successRoadmap } = useGetRoadmap(roadmapId as string)
@@ -46,7 +49,11 @@ export default function CreateRoadmap() {
   }
 
   const onSubmit = (values: CreateRoadmapType) => {
-    // console.log(values)
+    if (values.courses.length === 0) {
+      forms.setError('courses', { type: 'required', message: 'Courses is required' }) // set error to courses
+      return
+    }
+
     if (!roadmapId) return createRoadmap(values, { onSuccess })
     updateRoadmap({ ...values, id: roadmapId }, { onSuccess })
   }
