@@ -1,9 +1,8 @@
-import { HiCheckCircle, HiExclamationTriangle } from 'react-icons/hi2'
-
 import { useDisableBodyScroll } from '@/hooks'
 import { cn } from '@/lib/utils'
 import { Button } from '../ui/button'
 import * as React from 'react'
+import { HiCheck, HiOutlineExclamationTriangle } from 'react-icons/hi2'
 
 export interface DialogOptions {
   title: string
@@ -21,7 +20,7 @@ interface BaseDialogProps extends DialogOptions {
 }
 
 export default function Dialog({ open, onSubmit, onClose, ...rest }: BaseDialogProps) {
-  const { title, description, variant, submitText } = rest
+  const { title, description, variant, submitText, isLoading } = rest
 
   useDisableBodyScroll(open)
 
@@ -38,48 +37,49 @@ export default function Dialog({ open, onSubmit, onClose, ...rest }: BaseDialogP
   }, [variant, onSubmit])
 
   return (
-    <section
+    <div
       className={cn(
-        'fixed inset-0 z-[9999999] flex items-end justify-center p-4 transition-all duration-300 md:items-center',
+        'fixed inset-0 z-[9999999] flex items-end justify-center p-4 transition-colors md:items-center',
         open ? 'visible bg-gray-900/75' : 'invisible'
       )}
     >
       <div
         className={cn(
-          'flex w-full flex-col gap-6 overflow-hidden rounded-2xl bg-white p-8 shadow-xl transition-all duration-300 xl:w-[486px] xl:max-w-[486px]',
-          open ? 'scale-100 opacity-100' : 'scale-0 opacity-0'
+          'max-w-[486px] overflow-hidden rounded-lg bg-white shadow-xl transition-all duration-300',
+          open ? 'opacity-100' : 'opacity-0'
         )}
       >
-        <div className="flex flex-col items-center gap-4">
-          {variant === 'danger' && <HiExclamationTriangle className="text-[144px] text-red-500" />}
-          {variant === 'success' && <HiCheckCircle className="text-[144px] text-primary" />}
-
-          <div className="mt-1 text-center">
-            <h3 className="text-title text-base font-bold capitalize leading-6 md:text-3xl">{title}</h3>
-            <p className="mt-2 text-sm text-gray-500 md:text-base">{description}</p>
+        <div className="flex flex-col items-center gap-4 px-4 pb-4 pt-5 md:flex-row md:items-start md:gap-5 md:p-6">
+          <div
+            className={cn(
+              'flex cursor-pointer items-center justify-center rounded-full hover:bg-slate-200',
+              'h-12 w-12 flex-shrink-0 cursor-auto text-2xl',
+              variant === 'danger' && 'bg-red-100 text-red-600 hover:bg-red-100',
+              variant === 'success' && 'bg-green-100 text-green-600 hover:bg-green-100'
+            )}
+          >
+            {variant === 'danger' && <HiOutlineExclamationTriangle />}
+            {variant === 'success' && <HiCheck />}
+          </div>
+          <div className="mt-1 text-center md:text-left">
+            <h3 className="text-base font-bold capitalize leading-6 text-font md:text-lg">{title}</h3>
+            <p className="mt-2 text-[13px] font-normal text-gray-500 md:text-sm">{description}</p>
           </div>
         </div>
-        {variant === 'danger' && (
-          <div className="flex flex-col-reverse items-center justify-center gap-4 md:flex-row">
-            <Button
-              variant="outline"
-              className="w-full rounded-lg border-zinc-300 px-6 py-5 text-font md:w-fit"
-              onClick={onClose}
-            >
-              Cancel
-            </Button>
-            <Button
-              className={cn(
-                'w-full rounded-lg border px-6 py-5 capitalize md:w-fit',
-                variant === 'danger' && 'border-red-500 bg-red-500 text-white hover:bg-red-600'
-              )}
-              onClick={onSubmit}
-            >
-              {submitText}
-            </Button>
-          </div>
-        )}
+        <div className="flex flex-col-reverse items-center gap-2 bg-gray-50 px-4 py-3 md:flex-row md:justify-end md:gap-3 md:px-6">
+          <Button variant="outline" className="w-full px-6 md:w-fit md:text-xs" onClick={onClose}>
+            Cancel
+          </Button>
+          <Button
+            className="w-full px-6 capitalize md:w-fit md:text-xs"
+            onClick={onSubmit}
+            variant={variant === 'danger' ? 'destructive' : 'default'}
+            loading={isLoading}
+          >
+            {submitText}
+          </Button>
+        </div>
       </div>
-    </section>
+    </div>
   )
 }

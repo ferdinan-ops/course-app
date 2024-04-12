@@ -1,13 +1,32 @@
-import { Button } from '@/components/ui/button'
+import { More } from '@/components/atoms'
 import { CommentType } from '@/lib/types/comment.type'
 import { formatDate } from '@/lib/utils'
-import { HiEllipsisHorizontal } from 'react-icons/hi2'
+import { useComment, useDialog, useUserInfo } from '@/store/client'
+import { useDeleteComment } from '@/store/server/useComment'
 
 interface CommentCardProps {
   comment: CommentType
 }
 
 export default function CommentCard({ comment }: CommentCardProps) {
+  const { dialog } = useDialog()
+  const user = useUserInfo((state) => state.user)
+  const setComment = useComment((state) => state.setComment)
+
+  const { mutateAsync: deleteComment, isLoading } = useDeleteComment()
+
+  const handleDelete = () => {
+    dialog({
+      title: 'Delete Comment',
+      description: 'Are you sure you want to delete this comment?',
+      submitText: 'Delete',
+      variant: 'danger',
+      isLoading
+    }).then(async () => {
+      await deleteComment(comment.id)
+    })
+  }
+
   return (
     <article className="flex items-start">
       <div className="flex h-8 w-8 overflow-hidden rounded-full border-2 md:mr-3">
@@ -19,13 +38,15 @@ export default function CommentCard({ comment }: CommentCardProps) {
             <div className="text-[13px] font-semibold hover:text-primary md:text-[15px]">
               <p className="w-max">{comment.user.fullname}</p>
             </div>
-            <span className="hidden text-xs text-font/60 md:text-sm">&bull;</span>
+            <span className="text-xs text-font/60 md:text-sm">&bull;</span>
             <span className="text-xs text-font/60 md:text-sm">{formatDate(comment.created_at, 'without-hour')}</span>
           </div>
-          <Button size="icon" variant="outline" className="h-6 w-6 p-0">
-            <HiEllipsisHorizontal />
-          </Button>
-          {/* {userLogin && <More comment={comment} questionId={questionId} />} */}
+          {user?.id === comment.user.id && (
+            <More>
+              <More.Item type="edit" onClick={() => setComment({ id: comment.id, content: comment.content })} />
+              <More.Item type="delete" onClick={handleDelete} />
+            </More>
+          )}
         </div>
         <p className="text-[13px] md:text-sm">{comment.content}</p>
       </div>

@@ -7,7 +7,7 @@ import MultipleSelector from './forms/MultipleSelector'
 import Markdown from './Markdown'
 import Image from './Image'
 import Brand from './Brand'
-import AdminAction from './AdminAction'
+import More from './More'
 import BackButton from './BackButton'
 import Loading from './Loading'
 import NoData from './NoData'
@@ -29,7 +29,7 @@ export {
   ActiveLink,
   TextEditor,
   MultipleSelector,
-  AdminAction,
+  More,
   BackButton,
   TableSearch,
   Loading,

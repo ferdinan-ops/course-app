@@ -73,10 +73,11 @@ export interface GetCoursesParams {
   page?: number
   type?: string
   enabled?: boolean
+  limit?: number
 }
 
-export const useGetCourses = ({ search, page, type, enabled }: GetCoursesParams) => {
-  return useQuery(['courses', search, page, type], () => getCoursesFn(search, page, type), { enabled })
+export const useGetCourses = ({ search, page, type, enabled, limit }: GetCoursesParams) => {
+  return useQuery(['courses', search, page, type, limit], () => getCoursesFn(search, page, type, limit), { enabled })
 }
 
 export const useGetCourse = (id?: string) => {

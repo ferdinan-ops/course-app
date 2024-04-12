@@ -4,7 +4,7 @@ import { useNavigate } from 'react-router-dom'
 import { HiOutlineBookOpen, HiOutlineEye, HiOutlineEyeSlash, HiOutlineVideoCamera, HiPlus } from 'react-icons/hi2'
 
 import { Heading } from '@/components/organisms'
-import { AdminAction, Image, Loading, Pagination, TableSearch } from '@/components/atoms'
+import { More, Image, Loading, Pagination, TableSearch } from '@/components/atoms'
 
 import { Button } from '@/components/ui/button'
 import { Form, FormField, FormItem } from '@/components/ui/form'
@@ -128,20 +128,20 @@ export default function AdminCourse() {
               <TableCell position="center">{course._count.members}</TableCell>
               <TableCell position="center">{course._count.videos}</TableCell>
               <TableCell position="center">
-                <AdminAction>
-                  <AdminAction.Item type="edit" onClick={() => navigate(`/admin/course/${course.id}`)} />
-                  <AdminAction.Item type="delete" onClick={() => handleDelete(course.id)} />
-                  <AdminAction.Item
+                <More type="settings">
+                  <More.Item type="edit" onClick={() => navigate(`/admin/course/${course.id}`)} />
+                  <More.Item type="delete" onClick={() => handleDelete(course.id)} />
+                  <More.Item
                     label={course.is_published ? 'Unpublish' : 'Publish'}
                     icon={course.is_published ? HiOutlineEyeSlash : HiOutlineEye}
                     onClick={() => publishCourse({ id: course.id, published: !course.is_published })}
                   />
-                  <AdminAction.Item
+                  <More.Item
                     label="See videos"
                     icon={HiOutlineVideoCamera}
                     onClick={() => navigate(`/admin/course/${course.id}/video`)}
                   />
-                </AdminAction>
+                </More>
               </TableCell>
             </TableRow>
           ))}

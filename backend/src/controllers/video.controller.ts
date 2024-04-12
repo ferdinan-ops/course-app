@@ -13,7 +13,8 @@ export const createVideo = async (req: Request, res: Response) => {
   }
 
   try {
-    const info = await VideoService.getYoutubeVideoInfo(value.video_url)
+    const videoId = extractYouTubeVideoId(value.video_url)
+    const info = await VideoService.getYoutubeVideoInfo(videoId as string)
     const data = await VideoService.addNewVideo({ ...value, youtube_info: info }, req.userId as string)
 
     logInfo(req, 'Creating new video')

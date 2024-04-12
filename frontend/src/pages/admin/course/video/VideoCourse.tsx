@@ -4,7 +4,7 @@ import { useForm } from 'react-hook-form'
 import { Link, useNavigate, useParams } from 'react-router-dom'
 
 import { Heading } from '@/components/organisms'
-import { AdminAction, BackButton, Loading, TableSearch } from '@/components/atoms'
+import { More, BackButton, Loading, TableSearch } from '@/components/atoms'
 
 import { Button } from '@/components/ui/button'
 import { Form, FormField, FormItem } from '@/components/ui/form'
@@ -13,6 +13,8 @@ import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from '@
 import { formatDate } from '@/lib/utils'
 import { useDisableBodyScroll, useQueryParams, useTitle } from '@/hooks'
 import { useGetCourse, useGetVideos } from '@/store/server/useCourse'
+import { useDeleteVideo } from '@/store/server/useVideo'
+import { useDialog } from '@/store/client'
 
 interface FormFields {
   search: string
@@ -22,13 +24,16 @@ export default function VideoCourse() {
   useTitle('Admin ~ Video Course')
   const navigate = useNavigate()
   const { courseId } = useParams<{ courseId: string }>()
-  const forms = useForm<FormFields>()
 
+  const { dialog } = useDialog()
+  const forms = useForm<FormFields>()
   const { params, createParam, deleteParam } = useQueryParams(['search'])
-  const { data: course, isLoading } = useGetCourse(courseId as string)
+
+  const { mutateAsync: deleteVideo, isLoading: loadingDelete } = useDeleteVideo()
+  const { data: course, isLoading: loadingCourse } = useGetCourse(courseId as string)
   const { data: videos, isFetching, refetch } = useGetVideos(courseId as string, params.search || '')
 
-  useDisableBodyScroll(isFetching || isLoading)
+  useDisableBodyScroll(isFetching || loadingCourse)
 
   const onSubmit = (data: FormFields) => {
     if (data.search === '') {
@@ -40,9 +45,21 @@ export default function VideoCourse() {
     refetch()
   }
 
+  const handleDelete = (videoId: string) => {
+    dialog({
+      title: 'Are you sure?',
+      description: 'This will delete the video from the course',
+      variant: 'danger',
+      submitText: 'Delete',
+      isLoading: loadingDelete
+    }).then(async () => {
+      await deleteVideo(videoId)
+    })
+  }
+
   return (
     <React.Fragment>
-      {(isFetching || isLoading) && <Loading />}
+      {(isFetching || loadingCourse) && <Loading />}
       <BackButton className="lg:static lg:mb-5" />
       <Heading className="flex items-center gap-5 text-font">
         <div className="flex flex-col gap-1">
@@ -111,13 +128,10 @@ export default function VideoCourse() {
               </TableCell>
               <TableCell>{formatDate(video.created_at)}</TableCell>
               <TableCell position="center">
-                <AdminAction>
-                  <AdminAction.Item
-                    type="edit"
-                    onClick={() => navigate(`/admin/course/${courseId}/video/${video.id}`)}
-                  />
-                  <AdminAction.Item type="delete" />
-                </AdminAction>
+                <More type="settings">
+                  <More.Item type="edit" onClick={() => navigate(`/admin/course/${courseId}/video/${video.id}`)} />
+                  <More.Item type="delete" onClick={() => handleDelete(video.id)} />
+                </More>
               </TableCell>
             </TableRow>
           ))}

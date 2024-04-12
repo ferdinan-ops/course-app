@@ -1,19 +1,26 @@
-import { HiOutlineCog6Tooth, HiOutlinePencilSquare, HiOutlineTrash } from 'react-icons/hi2'
-import { Button } from '../ui/button'
+import { HiEllipsisHorizontal, HiOutlineCog6Tooth, HiOutlinePencilSquare, HiOutlineTrash } from 'react-icons/hi2'
 import { DropdownMenu, DropdownMenuContent, DropdownMenuItem, DropdownMenuTrigger } from '../ui/dropdown-menu'
+import { Button } from '../ui/button'
 import { IconType } from 'react-icons'
 
-interface AdminActionProps {
+interface MoreProps {
   children: React.ReactNode
+  type?: 'more' | 'settings'
 }
 
-export default function AdminAction({ children }: AdminActionProps) {
+export default function More({ children, type = 'more' }: MoreProps) {
   return (
     <DropdownMenu>
       <DropdownMenuTrigger asChild>
-        <Button variant="ghost" size="icon" className="bg-font text-white hover:bg-font/80 hover:text-white">
-          <HiOutlineCog6Tooth className="text-xl" />
-        </Button>
+        {type === 'settings' ? (
+          <Button variant="ghost" size="icon" className="bg-font text-white hover:bg-font/80 hover:text-white">
+            <HiOutlineCog6Tooth className="text-xl" />
+          </Button>
+        ) : (
+          <Button size="icon" variant="outline" className="h-6 w-6 p-0">
+            <HiEllipsisHorizontal />
+          </Button>
+        )}
       </DropdownMenuTrigger>
       <DropdownMenuContent align="end">{children}</DropdownMenuContent>
     </DropdownMenu>
@@ -38,4 +45,4 @@ function Item({ label, type = 'default', icon: Icon, onClick }: ItemProps) {
   )
 }
 
-AdminAction.Item = Item
+More.Item = Item

@@ -1,9 +1,11 @@
 import { Button } from '@/components/ui/button'
 import { Form, FormField } from '@/components/ui/form'
 import { useToast } from '@/components/ui/use-toast'
-import { useCreateComment } from '@/store/server/useComment'
+import { useComment } from '@/store/client'
+import { useCreateComment, useUpdateComment } from '@/store/server/useComment'
 import { useForm } from 'react-hook-form'
 import { HiPaperAirplane } from 'react-icons/hi2'
+import * as React from 'react'
 
 type FormFields = {
   content: string
@@ -16,8 +18,20 @@ interface CommentFormProps {
 export default function CommentForm({ videoId }: CommentFormProps) {
   const { toast } = useToast()
   const forms = useForm<FormFields>()
+  const comment = useComment((state) => state.comment)
 
-  const { mutate: createComment, isLoading } = useCreateComment()
+  const { mutate: createComment, isLoading: loadingCreate } = useCreateComment()
+  const { mutate: updateComment, isLoading: loadingUpdate } = useUpdateComment()
+
+  React.useEffect(() => {
+    if (comment.content !== '') {
+      forms.setValue('content', comment.content)
+    }
+  }, [comment.content, forms])
+
+  const onSuccess = () => {
+    forms.reset()
+  }
 
   const onSubmit = (values: FormFields) => {
     if (values.content === '') {
@@ -29,7 +43,8 @@ export default function CommentForm({ videoId }: CommentFormProps) {
     }
 
     const fields = { content: values.content, video_id: videoId }
-    createComment(fields, { onSuccess: () => forms.reset() })
+    if (!comment.id) return createComment(fields, { onSuccess })
+    updateComment({ id: comment.id, ...fields }, { onSuccess })
   }
 
   // eslint-disable-next-line @typescript-eslint/no-explicit-any
@@ -63,7 +78,7 @@ export default function CommentForm({ videoId }: CommentFormProps) {
             />
           )}
         />
-        <Button className="shadow-button self-end px-3 md:px-4 md:text-xs" loading={isLoading}>
+        <Button className="shadow-button self-end px-3 md:px-4 md:text-xs" loading={loadingCreate || loadingUpdate}>
           <span className="hidden md:flex">Upload Comment</span>
           <HiPaperAirplane className="md:hidden" />
         </Button>

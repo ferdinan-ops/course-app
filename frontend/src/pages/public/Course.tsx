@@ -29,7 +29,8 @@ export default function Course() {
   } = useGetCourses({
     page: Number(params.page) || 1,
     search: params.search || '',
-    enabled: !isMyCourse
+    enabled: !isMyCourse,
+    limit: 6
   })
 
   const {

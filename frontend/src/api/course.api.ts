@@ -49,12 +49,18 @@ export const publishCourseFn = async (fields: PublishCourseType) => {
   return await api.put(`/course/${fields.id}/publish`, { published: fields.published })
 }
 
-export const getCoursesFn = async (search?: string, page?: number, type?: string): Promise<CourseResponseType> => {
+export const getCoursesFn = async (
+  search?: string,
+  page?: number,
+  type?: string,
+  limit?: number
+): Promise<CourseResponseType> => {
   const response = await api.get('/course', {
     params: {
       q: search,
       page,
-      type
+      type,
+      limit
     }
   })
 

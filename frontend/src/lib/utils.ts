@@ -72,7 +72,9 @@ export const convertDurationToSeconds = (duration: string) => {
 export const formatDuration = (duration: string) => {
   const durationInSeconds = convertDurationToSeconds(duration)
 
-  const minutes = Math.floor(durationInSeconds / 60)
+  const hours = Math.floor(durationInSeconds / 3600)
+  const minutes = Math.floor((durationInSeconds % 3600) / 60)
   const seconds = durationInSeconds % 60
-  return `${minutes}:${seconds < 10 ? '0' : ''}${seconds}`
+
+  return `${hours ? `${hours}:` : ''}${minutes < 10 && hours ? '0' : ''}${minutes}:${seconds < 10 ? '0' : ''}${seconds}`
 }
