@@ -204,11 +204,12 @@ export const refreshToken = async (req: Request, res: Response) => {
 
   try {
     jwt.verify(refreshToken as string, ENV.refreshTokenSecret as string, async (error, decoded) => {
-      const { id } = decoded as { id: string }
       if (error) {
         logError(req, 'Refresh token is invalid/Forbidden')
         return res.status(403).json({ error: 'Forbidden' })
       }
+
+      const { id } = decoded as { id: string }
 
       const user = await AuthService.findUserById(id)
       if (!user) {
